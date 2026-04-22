@@ -386,32 +386,11 @@ function optsHtml(prev,items){
     if(it==='gc'){h+=`<div class="opt" id="opt-gc" onclick="togGC()"><div class="opt-L"><span class="opt-icon">🔢</span><div><div class="opt-name">골드숫자초</div><div class="opt-desc">1,300원/개</div></div></div><div class="opt-price" id="gc-price">선택</div></div><div class="qty-expand" id="gc-wrap"><span class="qlbl">개수 선택</span><div class="qrow"><button class="qbtn" onclick="event.stopPropagation();cqGC(-1)">−</button><span class="qnum" id="gc-qty">1</span><button class="qbtn" onclick="event.stopPropagation();cqGC(1)">+</button><span class="qprice" id="gc-total">1,300원</span></div><span class="qlbl" style="margin-top:4px">어떤 숫자로 해드릴까요?</span><input type="text" id="gc-nums" placeholder="예) 6, 0" onclick="event.stopPropagation()" /></div>`;}
     else if(it==='gb'){h+=`<div class="opt" id="opt-goldbar" onclick="togGB()"><div class="opt-L"><span class="opt-icon">✦</span><div><div class="opt-name">골드막대초</div><div class="opt-desc">1,000원/개</div></div></div><div class="opt-price" id="gb-price">선택</div></div><div class="qty-expand" id="gb-wrap"><span class="qlbl">개수 선택</span><div class="qrow"><button class="qbtn" onclick="event.stopPropagation();cqGB(-1)">−</button><span class="qnum" id="gb-qty">1</span><button class="qbtn" onclick="event.stopPropagation();cqGB(1)">+</button><span class="qprice" id="gb-total">1,000원</span></div></div>`;}
 
-else if(it==='topper'){
-  h+=`
-<div class="opt" id="opt-topper" onclick="togOpt('topper')">
-  <div class="opt-L">
-    <span class="opt-icon">✨</span>
-    <div>
-      <div class="opt-name">토퍼</div>
-      <div class="opt-desc">고정문구 · 변경불가</div>
-    </div>
-  </div>
-  <div class="opt-price">+4,000원</div>
-</div>
-
-<div class="qty-expand" id="topper-wrap">
-  <div id="topper-img-wrap" style="margin-top:-6px;margin-bottom:8px;cursor:pointer" onclick="toggleTopperImg()">
-
-    <img 
-      src="https://raw.githubusercontent.com/naroom-yeouido/naroom/main/topper.png"
-      alt="토퍼"
-      id="topper-img"
-      style="width:100%;max-height:160px;object-fit:cover;border-radius:10px;border:1px solid #EEE;transition:max-height .3s"
-    />
-
-    <div style="font-size:10px;color:#AAA;text-align:center;margin-top:3px">
-      이미지 탭하면 크게 볼 수 있어요
-    </div>
+<div id="topper-img-wrap" style="margin-top:-6px;margin-bottom:8px;cursor:pointer" onclick="toggleTopperImg()">
+    <img src="https://raw.githubusercontent.com/naroom-yeouido/naroom/main/topper.png" alt="토퍼" id="topper-img" 
+    style="width:100%;max-height:160px;object-fit:cover;border-radius:10px;border:1px solid #EEE;transition:max-height .3s" /> 
+      <div style="font-size:10px;color:#AAA;text-align:center;margin-top:3px"> 이미지 탭하면 크게 볼 수 있어요
+     </div>
 
   </div>
 </div>
