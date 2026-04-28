@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>NAROOM · 5월 가정의달 주문 상담</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#fff;color:#2D2D2D}
+.hidden{display:none!important}
+.wrap{max-width:480px;margin:0 auto;padding:0 16px 80px}
+.top{text-align:center;padding:28px 0 16px}
+.brand{font-size:11px;font-weight:700;color:#C8929A;letter-spacing:2px;margin-bottom:8px}
+.top h1{font-size:21px;font-weight:900;letter-spacing:-.5px}
+.top p{font-size:12px;color:#AAA;margin-top:5px}
+.prog-bg{height:3px;background:#F5EEEE;margin-bottom:6px}
+.prog-fill{height:100%;background:#C8929A;transition:width .4s}
+.step-lbl{font-size:11px;color:#CCC;text-align:right;margin-bottom:18px;font-weight:600}
+.sh h2{font-size:17px;font-weight:900;letter-spacing:-.3px;margin-bottom:4px}
+.sh p{font-size:12px;color:#AAA;line-height:1.6}
+.sh{margin-bottom:16px}
+.stitle{font-size:13px;font-weight:800;color:#555;display:block;margin:18px 0 9px}
+.stitle.t0{margin-top:0}
+.lbl{display:block;font-size:11px;font-weight:700;color:#AAA;letter-spacing:.3px;margin:14px 0 5px;text-transform:uppercase}
+.lbl.t0{margin-top:0}
+input[type=text],input[type=tel]{width:100%;padding:12px 13px;border:1.5px solid #EEE;border-radius:10px;font-size:14px;background:#fff;font-family:inherit;outline:none;transition:border-color .15s}
+input:focus{border-color:#C8929A}
+.cc{font-size:11px;color:#CCC;text-align:right;margin-top:4px;font-weight:600}
+.cc.over{color:#E24B4A}
+/* menu */
+.m-notice{background:#FFF5F6;border:1px solid #F0D8DC;border-radius:12px;padding:11px 13px;font-size:12px;color:#B07080;line-height:1.7;margin-bottom:13px}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.mc{border:1.5px solid #EEE;border-radius:16px;padding:20px 14px 18px;cursor:pointer;background:#fff;text-align:center;-webkit-tap-highlight-color:transparent;transition:all .15s}
+.mc:active{border-color:#C8929A;background:#FFF5F6;transform:scale(.98)}
+.mc.s2{grid-column:span 2}
+.mc h3{font-size:14px;font-weight:900;letter-spacing:-.3px}
+.mc p{font-size:11px;color:#AAA;margin-top:5px;line-height:1.5}
+.menu-img{width:100%;height:auto;border-radius:12px;display:block;margin-top:12px}
+/* calendar */
+.cal{background:#FAF7F7;border-radius:14px;padding:14px 12px;border:1px solid #EEECEC;margin:11px 0 0}
+.cal-hd{font-size:12px;font-weight:800;color:#888;text-align:center;margin-bottom:11px;letter-spacing:.5px}
+.cal-g{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cdow{font-size:10px;font-weight:800;color:#BBB;text-align:center;padding-bottom:6px}
+.cdow.s{color:#E06060}.cdow.t{color:#6080D0}
+.cd{text-align:center;padding:8px 2px;font-size:13px;color:#D8D8D8;border-radius:7px}
+.cd.av{color:#2D2D2D;font-weight:800;border:1.5px solid #E5E5E5;cursor:pointer;background:#fff;transition:all .13s}
+.cd.av:active,.cd.av.sel{border-color:#C8929A;background:#FFF5F6;color:#C8929A}
+.cd.av.red{color:#D85050}.cd.av.red.sel{color:#C8929A}
+.cal-leg{display:flex;align-items:center;gap:5px;margin-top:9px;justify-content:center}
+.cal-leg span{font-size:10px;color:#AAA}
+.cal-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid #C8929A;display:inline-block}
+/* pickup info */
+.pi{background:#FAF7F7;border-radius:12px;padding:13px 14px;margin:13px 0;border:1px solid #EEECEC}
+.pi-hd{font-size:12px;font-weight:800;color:#888;margin-bottom:9px}
+.pi-r{display:flex;gap:8px;margin-bottom:6px;align-items:flex-start}
+.pi-r:last-child{margin-bottom:0}
+.pi-b{font-size:10px;font-weight:800;padding:3px 8px;border-radius:20px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.pi-b.y{background:#E8F4EC;color:#2A7A4A}
+.pi-b.m{background:#FFF0D4;color:#A06010}
+.pi-t{font-size:12px;color:#666;line-height:1.8}
+/* time slots */
+.tg{font-size:11px;font-weight:800;margin:11px 0 6px}
+.tg.y{color:#2A7A4A}.tg.m{color:#A06010}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.ts{border:1.5px solid #EEE;border-radius:10px;padding:10px 3px;cursor:pointer;text-align:center;background:#fff;transition:all .13s}
+.ts.sel{border-color:#C8929A;background:#FFF5F6}
+.ts span{font-size:11px;font-weight:700;color:#2D2D2D}
+.ts.sel span{color:#C8929A}
+/* design */
+.dcg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+.dc{border:1.5px solid #EEE;border-radius:12px;padding:18px 5px 14px;cursor:pointer;background:#fff;text-align:center;transition:all .15s}
+.dc.sel{border-color:#C8929A;background:#FFF5F6}
+.dc h4{font-size:13px;font-weight:800;color:#2D2D2D;line-height:1.4}
+.dc.sel h4{color:#C8929A}
+/* size */
+.szg{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:5px}
+.sz{border:1.5px solid #EEE;border-radius:13px;padding:15px 10px;cursor:pointer;background:#fff;text-align:center;transition:all .15s}
+.sz.sel{border-color:#C8929A;background:#FFF5F6}
+.sz b{font-size:16px;font-weight:900;display:block}
+.sz em{font-size:14px;font-weight:900;color:#C8929A;display:block;margin-top:7px;font-style:normal}
+/* rows (sg/bx/opt) */
+.row{border:1.5px solid #EEE;border-radius:11px;padding:11px 13px;cursor:pointer;background:#fff;display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:7px;transition:all .13s}
+.row.sel{border-color:#C8929A;background:#FFF5F6}
+.row.dis{opacity:.4;cursor:not-allowed;background:#F8F8F8}
+.row .rn{font-size:13px;font-weight:700;line-height:1.4}
+.row .rt{font-size:10px;color:#C8929A;font-weight:700;margin-top:3px}
+.row .rp{font-size:12px;font-weight:700;color:#AAA;white-space:nowrap;margin-left:8px;flex-shrink:0;margin-top:2px}
+.row.sel .rp{color:#C8929A}
+/* qty */
+.qrow{display:flex;align-items:center;gap:11px;padding:12px 13px;border:1.5px solid #EEE;border-radius:11px;margin-bottom:9px;background:#fff}
+.qb{width:33px;height:33px;border:1.5px solid #DDD;border-radius:8px;background:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;color:#666;font-family:inherit;flex-shrink:0}
+.qn{font-size:18px;font-weight:800;min-width:28px;text-align:center}
+/* class time */
+.ct{border:1.5px solid #EEE;border-radius:13px;padding:14px 15px;cursor:pointer;background:#fff;display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;transition:all .15s}
+.ct.sel{border-color:#C8929A;background:#FFF5F6}
+.ct.closed{background:#F5F5F5;border-color:#EBEBEB;cursor:not-allowed}
+.ct h4{font-size:14px;font-weight:700}
+.ct.closed h4{color:#AAA}
+.ct-badge{font-size:10px;font-weight:800;background:#FFEAEA;color:#C04040;padding:2px 7px;border-radius:5px;display:inline-block;margin-top:4px}
+.ct-radio{width:20px;height:20px;border-radius:50%;border:1.5px solid #DDD;background:#fff;flex-shrink:0;transition:all .13s}
+.ct-radio.on{border-color:#C8929A;background:#C8929A}
+/* misc */
+.div{height:1px;background:#F5F0F0;margin:13px 0}
+.tb{background:#FFF5F6;border-radius:11px;padding:11px 13px;margin:11px 0;text-align:right;font-size:14px;font-weight:800;color:#C8929A}
+.note{background:#FFF5F6;border:1px solid #F0D8DC;border-radius:11px;padding:11px 13px;font-size:12px;color:#B07080;line-height:1.7}
+.sub-box{background:#FAF7F7;border-radius:11px;padding:11px 11px 4px;margin:-2px 0 9px;border:1px solid #EEECEC}
+.sub-lbl{font-size:11px;font-weight:800;color:#888;margin-bottom:7px}
+/* result */
+.rbox{background:#FAF7F7;border-radius:13px;padding:15px;font-size:13px;line-height:2.1;white-space:pre-wrap;color:#2D2D2D;margin-bottom:13px;border:1px solid #EEE;word-break:break-all}
+.btn-kk{width:100%;padding:15px;background:#FEE500;border:none;border-radius:13px;font-size:15px;font-weight:900;cursor:pointer;color:#3A1D1D;font-family:inherit;margin-bottom:8px}
+.btn-rst{width:100%;padding:12px;background:#fff;border:1.5px solid #EEE;border-radius:13px;font-size:13px;color:#BBB;cursor:pointer;font-family:inherit;font-weight:700}
+.ok{text-align:center;padding:9px;font-size:13px;color:#2d8a4e;font-weight:800;display:none}
+.nav{display:flex;gap:8px;margin-top:16px}
+.btn-b{flex:1;padding:13px;border:1.5px solid #EEE;border-radius:11px;background:#fff;font-size:13px;cursor:pointer;color:#BBB;font-family:inherit;font-weight:700}
+.btn-n{flex:2;padding:13px;border:none;border-radius:11px;background:#C8929A;color:#fff;font-size:14px;font-weight:900;cursor:pointer;font-family:inherit;letter-spacing:-.2px}
+.btn-n:disabled{background:#EEE;color:#CCC;cursor:default}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- 메인 메뉴 -->
+<div id="ms">
+  <div class="top">
+    <div class="brand">NAROOM · 나룸</div>
+    <h1>5월 가정의달 주문 상담</h1>
+  </div>
+  <div class="m-notice">⏰ 픽업 희망 날짜·시간을 먼저 확인하신 후 상담폼을 작성해 주세요 😊</div>
+  <div class="mgrid">
+    <div class="mc" onclick="go('cake')"><h3>카네이션 케이크</h3></div>
+    <div class="mc" onclick="go('dessert')"><h3>카네이션 디저트</h3></div>
+    <div class="mc s2" onclick="go('class')">
+      <h3>카네이션 화과자 원데이클래스</h3>
+      <p>따뜻한 순간을 직접 빚어서 정성을 선물 해 보세요</p>
+    </div>
+  </div>
+  <img src="https://github.com/naroom-yeouido/naroom/blob/main/5.jpg?raw=true" alt="나룸 5월 가정의달" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:auto;border-radius:14px;display:block;margin-top:13px;border:1px solid #EEE">
+</div>
+
+<!-- 주문 폼 -->
+<div id="fs" class="hidden">
+  <div class="top">
+    <div class="brand">NAROOM · 나룸</div>
+    <h1 id="ftitle"></h1>
+    <p>5월 가정의달 주문 상담</p>
+  </div>
+  <div class="prog-bg"><div class="prog-fill" id="pf" style="width:0%"></div></div>
+  <div class="step-lbl" id="sl"></div>
+  <div id="s0"></div>
+  <div id="s1" class="hidden"></div>
+  <div id="sr" class="hidden">
+    <div class="sh"><h2>주문 내역 확인</h2><p>내용을 확인하신 후 아래 버튼을 눌러주세요</p></div>
+    <div class="rbox" id="rt"></div>
+    <button class="btn-kk" onclick="doCopy()">📋 복사 후 카카오채널로 전송</button>
+    <div class="ok" id="ok">✓ 복사 완료! 카카오채널로 이동합니다...</div>
+    <div style="background:#FFF8E8;border:1px solid #FFE5A0;border-radius:11px;padding:13px 15px;margin-bottom:12px;font-size:13px;color:#7A5800;line-height:1.9">
+      📌 <b>전송 방법</b><br>① 위 노란 버튼 누르면 자동 복사<br>② 카카오채널 채팅창 → 입력창 <b>꾹 누르고 붙여넣기</b><br>③ 전송 버튼 눌러주세요 😊
+    </div>
+    <button class="btn-rst" onclick="toMenu()">처음으로 돌아가기</button>
+  </div>
+</div>
+
+</div>
+<script>
+/* ── 날짜 조건 ── */
+const NOW=new Date();
+const maOK=NOW<new Date(2026,3,30,10,0,0); // 쌀마들렌 4/30 10시 마감
+const pre5=NOW.getMonth()+1<5;              // 5월 전 여부
+
+/* ── 2026년 5월 달력 ── (5월1일=금=DOW5) */
+const AVAIL=[5,6,7,8,9,14,15,16];
+const HOL=[5]; // 어린이날
+// 디자인별 가격
+const DCP={'감사':{'1호':65000,'2호':80000},'마음':{'1호':60000,'2호':75000},'다정':{'1호':60000,'2호':75000}};
+
+let prod='';
+const D={orderer:'',contact:'',pDay:null,pDow:null,pTime:'',pMuin:false,design:'',size:'',szP:0,seolgi:'',sgX:0,box:'',bxP:0,msg:'',heart:false,dType:'',dSub:'',dP:0,qty:1,cTime:'',persons:1};
+const F=n=>n.toLocaleString()+'원';
+
+function go(type){
+  prod=type;
+  Object.assign(D,{orderer:'',contact:'',pDay:null,pDow:null,pTime:'',pMuin:false,design:'',size:'',szP:0,seolgi:'',sgX:0,box:'',bxP:0,msg:'',heart:false,dType:'',dSub:'',dP:0,qty:1,cTime:'',persons:1});
+  document.getElementById('ms').classList.add('hidden');
+  document.getElementById('fs').classList.remove('hidden');
+  document.getElementById('ftitle').textContent={cake:'카네이션 케이크',dessert:'카네이션 디저트',class:'카네이션 화과자 원데이클래스'}[type];
+  step(0);
+}
+function toMenu(){
+  document.getElementById('fs').classList.add('hidden');
+  document.getElementById('ms').classList.remove('hidden');
+}
+function step(n){
+  ['s0','s1','sr'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  const tot=prod==='class'?2:3;
+  if(n==='r'){
+    document.getElementById('pf').style.width='100%';
+    document.getElementById('sl').textContent='완료!';
+    const o=document.getElementById('orderer'),c=document.getElementById('contact'),m=document.getElementById('cmsg');
+    if(o)D.orderer=o.value.trim();if(c)D.contact=c.value.trim();if(m)D.msg=m.value.trim();
+    document.getElementById('rt').textContent=summary();
+    document.getElementById('sr').classList.remove('hidden');
+  }else{
+    document.getElementById('pf').style.width=Math.round(n/tot*100)+'%';
+    document.getElementById('sl').textContent=(n+1)+' / '+tot;
+    document.getElementById('s'+n).classList.remove('hidden');
+    n===0?renderS0():renderS1();
+  }
+  window.scrollTo(0,0);
+}
+
+/* ── STEP0 ── */
+function renderS0(){
+  const cls=prod==='class';
+  let h=`<div class="sh"><h2>주문자 정보 & ${cls?'클래스 일정':'픽업 일정'}</h2></div>
+<span class="lbl t0">예약자 성함</span><input type="text" id="orderer" placeholder="예) 홍길동" maxlength="20" oninput="ck0()">
+<span class="lbl">연락처</span><input type="tel" id="contact" placeholder="예) 010-1234-5678" maxlength="20" oninput="ck0()">`;
+  if(cls){
+    h+=`<span class="lbl">클래스 일정 선택</span>
+<div class="ct closed"><div><h4>5월 3일 (토) 오후 2시</h4><span class="ct-badge">마감</span></div></div>
+<div class="ct" id="ctc" onclick="sCT(this,'5월 5일 (화) 오후 2시')"><div><h4>5월 5일 (화) 오후 2시</h4></div><div class="ct-radio" id="ctr"></div></div>
+<div id="pw" class="hidden"><span class="lbl">참여 인원</span>
+<div class="qrow"><button class="qb" onclick="chP(-1)">−</button><span class="qn" id="pn">1</span><span style="font-size:14px;font-weight:700">명</span><button class="qb" onclick="chP(1)">+</button><span style="font-size:13px;color:#C8929A;font-weight:700;margin-left:auto">65,000원 / 인</span></div>
+<div class="tb">합계: <span id="ct2">65,000원</span></div></div>`;
+  }else{
+    h+=`<span class="lbl">픽업 희망 날짜</span>${cal()}
+<div class="pi"><div class="pi-hd">📍 픽업 가능 시간</div>
+<div class="pi-r"><span class="pi-b y">공방 픽업</span><div class="pi-t">월~금 10시~17시<br>토요일 9시~17시<br>일요일 9시~13시</div></div>
+<div class="pi-r"><span class="pi-b m">무인 픽업</span><div class="pi-t">월~금 17시~20시<br>토요일 17시~20시</div></div>
+<div style="font-size:11px;color:#AAA;margin-top:7px;padding-top:7px;border-top:1px solid #F0EDED;line-height:1.7">픽업은 선택하신 시간에 맞춰 준비되며,<br>약속 시간 준수 부탁드립니다.</div></div>
+<div id="tsec" class="hidden"><div id="tslots"></div></div>`;
+  }
+  h+=`<div class="nav"><button class="btn-b" onclick="toMenu()">← 메뉴</button><button class="btn-n" id="bs0" disabled onclick="next0()">다음 →</button></div>`;
+  document.getElementById('s0').innerHTML=h;
+  if(D.orderer){const e=document.getElementById('orderer');if(e)e.value=D.orderer;}
+  if(D.contact){const e=document.getElementById('contact');if(e)e.value=D.contact;}
+  if(!cls&&D.pDay){const cd=document.getElementById('d'+D.pDay);if(cd)cd.classList.add('sel');rSlots(D.pDow);document.getElementById('tsec').classList.remove('hidden');if(D.pTime)setTimeout(()=>{document.querySelectorAll('.ts').forEach(e=>{if(e.dataset.t===D.pTime)e.classList.add('sel');});},30);}
+  if(cls&&D.cTime){const ct=document.getElementById('ctc'),cr=document.getElementById('ctr');if(ct)ct.classList.add('sel');if(cr)cr.classList.add('on');document.getElementById('pw').classList.remove('hidden');document.getElementById('pn').textContent=D.persons;document.getElementById('ct2').textContent=F(65000*D.persons);}
+}
+
+function cal(){
+  const DOW=['일','월','화','수','목','금','토'];
+  let h=`<div class="cal"><div class="cal-hd">📅 2026년 5월</div><div class="cal-g">`;
+  DOW.forEach((d,i)=>{h+=`<div class="cdow${i===0?' s':i===6?' t':''}">${d}</div>`;});
+  for(let i=0;i<5;i++)h+=`<div class="cd"></div>`; // 5월1일=금(5), 빈칸5개
+  for(let d=1;d<=31;d++){
+    const dow=(5+d-1)%7,av=AVAIL.includes(d),red=dow===0||HOL.includes(d);
+    if(av)h+=`<div class="cd av${red?' red':''}" id="d${d}" onclick="sDay(${d},${dow})">${d}</div>`;
+    else h+=`<div class="cd"style="${dow===0?'color:#FFCECE':dow===6?'color:#C4C8FF':''}">${d}</div>`;
+  }
+  h+=`</div><div class="cal-leg"><div class="cal-dot"></div><span>픽업 가능일</span></div></div>`;
+  return h;
+}
+function sDay(d,dow){document.querySelectorAll('.cd.sel').forEach(e=>e.classList.remove('sel'));document.getElementById('d'+d).classList.add('sel');D.pDay=d;D.pDow=dow;D.pTime='';rSlots(dow);document.getElementById('tsec').classList.remove('hidden');ck0();}
+function rSlots(dow){
+  const sun=dow===0,sat=dow===6;
+  const mkS=(sh,eh)=>{const r=[];for(let h=sh;h<eh;h++){r.push(h+':00~'+h+':30');r.push(h+':30~'+(h+1)+':00');}return r;};
+  const y=sun?mkS(9,13):sat?mkS(9,17):mkS(10,17);
+  const m=sun?[]:mkS(17,20);
+  let h='';
+  if(y.length){h+=`<div class="tg y">🟢 공방 픽업</div><div class="tgrid">`;y.forEach(t=>{h+=`<div class="ts" data-t="${t}" onclick="sT(this,'${t}',false)"><span>${t}</span></div>`;});h+=`</div>`;}
+  if(m.length){h+=`<div class="tg m" style="margin-top:13px">🟡 무인 픽업</div><div class="tgrid">`;m.forEach(t=>{h+=`<div class="ts" data-t="${t}" onclick="sT(this,'${t}',true)"><span>${t}</span></div>`;});h+=`</div>`;}
+  document.getElementById('tslots').innerHTML=h;
+}
+function sT(el,t,muin){document.querySelectorAll('.ts').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');D.pTime=t;D.pMuin=muin;ck0();}
+function sCT(el,lbl){document.querySelectorAll('.ct:not(.closed)').forEach(e=>{e.classList.remove('sel');const r=e.querySelector('.ct-radio');if(r)r.classList.remove('on');});el.classList.add('sel');const r=el.querySelector('.ct-radio');if(r)r.classList.add('on');D.cTime=lbl;document.getElementById('pw').classList.remove('hidden');ck0();}
+function chP(d){D.persons=Math.max(1,D.persons+d);document.getElementById('pn').textContent=D.persons;document.getElementById('ct2').textContent=F(65000*D.persons);}
+function ck0(){const o=document.getElementById('orderer'),c=document.getElementById('contact');const ok=!!(o&&o.value.trim()&&c&&c.value.trim()&&(prod==='class'?D.cTime:(D.pDay&&D.pTime)));const b=document.getElementById('bs0');if(b)b.disabled=!ok;}
+function next0(){const o=document.getElementById('orderer'),c=document.getElementById('contact');if(o)D.orderer=o.value.trim();if(c)D.contact=c.value.trim();prod==='class'?step('r'):step(1);}
+
+/* ── STEP1 ── */
+function renderS1(){document.getElementById('s1').innerHTML=prod==='cake'?bCake():bDessert();}
+
+function bCake(){
+  const sgBase=pre5
+    ?`<div class="row" onclick="sSg(this,'밤 품은 무설탕 흑임자 수제 필링 + 하얀설기',0)"><div><div class="rn">밤 품은 무설탕 흑임자 수제 필링 + 하얀설기</div><div class="rt">4월 30일까지 사전예약 이벤트 🎁</div></div><div class="rp">기본 포함</div></div>`
+    :`<div class="row" onclick="sSg(this,'하얀설기 + 블루베리',0)"><div><div class="rn">하얀설기 + 블루베리</div><div class="rt">기본</div></div><div class="rp">기본 포함</div></div>`;
+  const bxEx=pre5
+    ?`<div class="row" onclick="sBx(this,'투명박스 🎁',0)"><div><div class="rn">투명박스 🎁</div><div class="rt">4월 30일까지 사전예약 이벤트 🎁</div></div><div class="rp">기본 포함</div></div>`
+    :`<div class="row" onclick="sBx(this,'투명박스',5000)"><div><div class="rn">투명박스</div><div class="rt">4월 30일까지 사전예약 이벤트 🎁</div></div><div class="rp">+5,000원</div></div>`;
+  const hSub=pre5?`<div class="rt">4월 30일까지 사전예약 이벤트 🎁</div>`:'';
+  return `<div class="sh"><h2>케이크 옵션 선택</h2></div>
+<span class="stitle t0">디자인 선택</span>
+<div class="dcg">
+  <div class="dc" id="dc감사" onclick="sDc(this,'감사')"><h4>감사</h4></div>
+  <div class="dc" id="dc마음" onclick="sDc(this,'마음')"><h4>마음</h4></div>
+  <div class="dc" id="dc다정" onclick="sDc(this,'다정')"><h4>다정</h4></div>
+</div>
+<div id="szs" class="hidden">
+  <span class="stitle">사이즈 선택</span>
+  <div class="szg">
+    <div class="sz" id="sz1" onclick="sSz(this,'1호')"><b>1호</b><em id="sp1">-</em></div>
+    <div class="sz" id="sz2" onclick="sSz(this,'2호')"><b>2호</b><em id="sp2">-</em></div>
+  </div>
+</div>
+<span class="stitle">설기 종류</span>
+<div id="sgg">
+  ${sgBase}
+  <div class="row" onclick="sSg(this,'단호박설기 + 단호박필링',5000)"><div><div class="rn">단호박설기 + 단호박필링</div></div><div class="rp">+5,000원</div></div>
+  <div class="row" onclick="sSg(this,'흑임자설기 + 흑임자필링',5000)"><div><div class="rn">흑임자설기 + 흑임자필링</div></div><div class="rp">+5,000원</div></div>
+</div>
+<span class="stitle">포장 박스</span>
+<div id="bxg">
+  <div class="row" onclick="sBx(this,'흰박스',0)"><div><div class="rn">흰박스</div><div class="rt">기본</div></div><div class="rp">기본 포함</div></div>
+  ${bxEx}
+</div>
+<span class="stitle">추가 옵션</span>
+<span class="lbl t0">✏️ 하단 문구 <span style="font-weight:400;text-transform:none">(17자 이내)</span></span>
+<input type="text" id="cmsg" placeholder="예) 부모님 사랑합니다." maxlength="19" oninput="uMsg()">
+<div class="cc" id="mc">0 / 17자</div>
+<div class="div"></div>
+<div class="row" id="oh" onclick="tHeart()">
+  <div style="display:flex;align-items:center;gap:10px"><span style="font-size:18px">🕯️</span><div><div class="rn">하트초</div>${hSub}</div></div>
+  <div class="rp" id="hp">선택</div>
+</div>
+<div class="tb hidden" id="ctb">예상 금액: <span id="ctp">-</span></div>
+<div class="nav"><button class="btn-b" onclick="step(0)">← 이전</button><button class="btn-n" id="bs1" disabled onclick="step('r')">주문 내역 확인 →</button></div>`;
+}
+
+function bDessert(){
+  const maRow=maOK
+    ?`<div class="row" id="dsm" onclick="sDSub(this,'무염 쌀마들렌')"><div><div class="rn">무염 쌀마들렌</div><div class="rt">~4월30일 10시 주문 마감</div></div></div>`
+    :`<div class="row dis"><div><div class="rn">무염 쌀마들렌</div><div class="rt">주문 마감</div></div></div>`;
+  return `<div class="sh"><h2>디저트 선택</h2></div>
+<span class="stitle t0">디저트 종류</span>
+<div class="row" id="dt6" onclick="sDt(this,'6구 카네이션',33000)"><div><div class="rn">6구 카네이션</div></div><div class="rp">33,000원</div></div>
+<div id="sub6" class="hidden">
+  <div class="sub-box"><div class="sub-lbl">구성 선택</div>
+  ${maRow}
+  <div class="row" id="dss" onclick="sDSub(this,'퐁신퐁신 하얀설기')"><div><div class="rn">퐁신퐁신 하얀설기</div></div></div>
+  </div>
+</div>
+<div class="row" id="dtj" onclick="sDt(this,'도라지정과 SET',68000)"><div><div class="rn">도라지정과 SET</div><div class="rt">도라지정과 150g + 다과 10구</div></div><div class="rp">68,000원</div></div>
+<div class="row" id="dts" onclick="sDt(this,'곶감산도 SET',37000)"><div><div class="rn">곶감산도 SET</div><div class="rt">크렌베리+호두 품은 화과자 + 곶감산도 2종 (흑임자, 밤)</div></div><div class="rp">37,000원</div></div>
+<div id="dqw" class="hidden">
+  <span class="stitle">수량 선택</span>
+  <div class="qrow"><button class="qb" onclick="chQ(-1)">−</button><span class="qn" id="dq">1</span><span style="font-size:14px;font-weight:700">개</span><button class="qb" onclick="chQ(1)">+</button></div>
+  <div class="note" style="margin-bottom:11px">🎀 보자기 포장 선물 (색상 랜덤) 🎁</div>
+  <div class="tb">합계: <span id="dtot">0원</span></div>
+</div>
+<div class="nav"><button class="btn-b" onclick="step(0)">← 이전</button><button class="btn-n" id="bs1d" disabled onclick="step('r')">주문 내역 확인 →</button></div>`;
+}
+
+/* ── 케이크 핸들러 ── */
+function sDc(el,nm){document.querySelectorAll('.dc').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');D.design=nm;D.size='';D.szP=0;document.querySelectorAll('.sz').forEach(e=>e.classList.remove('sel'));const p=DCP[nm];document.getElementById('sp1').textContent=F(p['1호']);document.getElementById('sp2').textContent=F(p['2호']);document.getElementById('szs').classList.remove('hidden');ckC();updT();}
+function sSz(el,nm){document.querySelectorAll('.sz').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');D.size=nm;D.szP=DCP[D.design][nm];ckC();updT();}
+function sSg(el,nm,x){document.getElementById('sgg').querySelectorAll('.row').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');D.seolgi=nm;D.sgX=x;ckC();updT();}
+function sBx(el,nm,p){document.getElementById('bxg').querySelectorAll('.row').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');D.box=nm;D.bxP=p;ckC();updT();}
+function tHeart(){D.heart=!D.heart;document.getElementById('oh').classList.toggle('sel',D.heart);document.getElementById('hp').textContent=D.heart?'추가 ✓':'선택';}
+function uMsg(){const e=document.getElementById('cmsg'),c=document.getElementById('mc');if(!e||!c)return;D.msg=e.value;const l=e.value.length;c.textContent=l+' / 17자';c.classList.toggle('over',l>17);}
+function updT(){const t=D.szP+D.sgX+D.bxP;const b=document.getElementById('ctb'),p=document.getElementById('ctp');if(b&&p&&t>0){b.classList.remove('hidden');p.textContent=t.toLocaleString()+'원~';}}
+function ckC(){const ok=!!(D.design&&D.size&&D.seolgi&&D.box);const b=document.getElementById('bs1');if(b)b.disabled=!ok;}
+
+/* ── 디저트 핸들러 ── */
+function sDt(el,nm,p){document.querySelectorAll('[id^="dt"]').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');D.dType=nm;D.dP=p;D.dSub='';D.qty=1;const s=document.getElementById('sub6');if(s)s.classList.toggle('hidden',nm!=='6구 카네이션');if(nm==='6구 카네이션'){document.querySelectorAll('[id^="ds"]').forEach(e=>e.classList.remove('sel'));document.getElementById('dqw').classList.add('hidden');const b=document.getElementById('bs1d');if(b)b.disabled=true;return;}document.getElementById('dqw').classList.remove('hidden');document.getElementById('dq').textContent=1;document.getElementById('dtot').textContent=F(p);const b=document.getElementById('bs1d');if(b)b.disabled=false;}
+function sDSub(el,nm){if(el.classList.contains('dis'))return;document.querySelectorAll('[id^="ds"]').forEach(e=>e.classList.remove('sel'));el.classList.add('sel');D.dSub=nm;document.getElementById('dqw').classList.remove('hidden');document.getElementById('dq').textContent=1;document.getElementById('dtot').textContent=F(D.dP);const b=document.getElementById('bs1d');if(b)b.disabled=false;}
+function chQ(d){D.qty=Math.max(1,D.qty+d);document.getElementById('dq').textContent=D.qty;document.getElementById('dtot').textContent=F(D.dP*D.qty);}
+
+/* ── 요약 ── */
+function dowKr(d){return['일','월','화','수','목','금','토'][(5+d-1)%7]+(HOL.includes(d)?'/어린이날':'');}
+function summary(){
+  const L=[],ps=D.pDay?`5월 ${D.pDay}일 (${dowKr(D.pDay)})`:'',ts=D.pTime?D.pTime+(D.pMuin?' (무인픽업)':' (공방픽업)'):'';
+  if(prod==='cake'){
+    L.push('🌸 카네이션 케이크 주문 상담','',`· 주문자: ${D.orderer}`,`· 연락처: ${D.contact}`,`· 픽업 날짜: ${ps}`,`· 픽업 시간: ${ts}`,'',`· 디자인: ${D.design} 카네이션`,`· 사이즈: ${D.size} (${F(D.szP)})`,`· 설기 종류: ${D.seolgi}${D.sgX>0?' (+'+F(D.sgX)+')':''}`,`· 포장 박스: ${D.box}${D.bxP>0?' (+'+F(D.bxP)+')':' (기본)'}`);
+    if(D.msg)L.push(`· 하단 문구: ${D.msg}`);
+    if(D.heart)L.push(`· 하트초: 추가`);
+    L.push('','─────────────────',`· 케이크 기본가: ${F(D.szP)}`);
+    if(D.sgX>0)L.push(`· 설기 추가: +${F(D.sgX)}`);
+    if(D.bxP>0)L.push(`· 포장박스: +${F(D.bxP)}`);
+    L.push(`· 합계: ${F(D.szP+D.sgX+D.bxP)}~`);
+  }else if(prod==='dessert'){
+    L.push('🌸 카네이션 디저트 주문 상담','',`· 주문자: ${D.orderer}`,`· 연락처: ${D.contact}`,`· 픽업 날짜: ${ps}`,`· 픽업 시간: ${ts}`,'',`· 디저트: ${D.dType}${D.dSub?' ('+D.dSub+')':''}`,`· 수량: ${D.qty}개`,`· 포장: 보자기 포장 (색상 랜덤) 🎁`,'','─────────────────',`· 합계: ${F(D.dP*D.qty)}`);
+  }else{
+    L.push('🌸 카네이션 화과자 원데이클래스 주문 상담','',`· 예약자: ${D.orderer}`,`· 연락처: ${D.contact}`,`· 클래스 일정: ${D.cTime}`,`· 인원: ${D.persons}명`,'','─────────────────',`· 합계: ${F(65000*D.persons)}`);
+  }
+  L.push('','제작 가능 여부 확인 해 주세요😊');
+  return L.join('\n');
+}
+
+/* ── 카카오 복사 ── */
+function doCopy(){
+  const t=document.getElementById('rt').textContent,ok=document.getElementById('ok');
+  const fb=()=>{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.focus();a.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(a);};
+  const done=()=>{ok.style.display='block';setTimeout(()=>{ok.style.display='none';window.open('http://pf.kakao.com/_HBzyu/chat','_blank');},1200);};
+  navigator.clipboard?navigator.clipboard.writeText(t).then(done).catch(()=>{fb();done();}):(() =>{fb();done();})();
+}
+</script>
+</body>
+</html>
