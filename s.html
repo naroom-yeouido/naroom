@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>떡 선물 주문</title>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fdf8f5; --card:#fff;
+  --rose:#d4878a; --rose-d:#b86468; --rose-pale:#fdf0f0; --rose-b:#eed8d8;
+  --gold:#c9a050; --gold-pale:#fdf6e3;
+  --sage:#8aab84; --sage-pale:#eef5ec;
+  --text:#2d1f1a; --mid:#7a5c55; --light:#b09088;
+  --sh:0 2px 14px rgba(180,100,80,.08);
+  --sh-md:0 6px 28px rgba(180,100,80,.15);
+  --r:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);font-family:'Noto Sans KR',sans-serif;color:var(--text);padding-bottom:110px}
+
+/* HERO */
+.hero{
+  background:linear-gradient(150deg,#f5dfe0 0%,#fdf4ee 60%,#e8f3e6 100%);
+  padding:0 0 32px; text-align:center; overflow:hidden;
+}
+.hero-img-wrap{
+  width:100%;max-height:220px;overflow:hidden;position:relative;
+  margin-bottom:20px;
+}
+.hero-img{
+  width:100%;max-height:220px;object-fit:cover;object-position:center;
+  display:block;
+}
+.hero-img-wrap::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:60px;
+  background:linear-gradient(to bottom,transparent,#f5dfe0 90%);
+}
+.hero-inner{padding:0 20px}
+.hero-tag{display:inline-block;background:rgba(255,255,255,.75);border:1px solid var(--rose-b);color:var(--rose-d);font-size:11px;font-weight:500;letter-spacing:2px;padding:4px 14px;border-radius:30px;margin-bottom:12px}
+.hero h1{font-family:'Nanum Myeongjo',serif;font-size:clamp(22px,5.5vw,38px);font-weight:800;line-height:1.35}
+.hero h1 b{color:var(--rose-d)}
+.hero-desc{margin-top:10px;font-size:13px;color:var(--mid);font-weight:300;line-height:1.9}
+
+/* WRAP */
+.wrap{max-width:540px;margin:0 auto;padding:0 16px}
+
+/* SECTION TITLE */
+.st{margin:28px 0 12px}
+.st h2{font-family:'Nanum Myeongjo',serif;font-size:17px;font-weight:700}
+.st p{font-size:12px;color:var(--light);margin-top:3px;line-height:1.6}
+
+/* BOX SIZE TABS */
+.box-tabs{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.box-tabs::-webkit-scrollbar{display:none}
+.box-tab{
+  flex:0 0 auto;
+  background:var(--card);border:2px solid transparent;border-radius:14px;
+  padding:12px 16px;cursor:pointer;text-align:center;min-width:80px;
+  box-shadow:var(--sh);transition:all .2s cubic-bezier(.34,1.2,.64,1);
+}
+.box-tab:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
+.box-tab.on{border-color:var(--rose-d);background:var(--rose-pale)}
+.box-tab .tb-icon{font-size:22px;margin-bottom:4px}
+.box-tab .tb-name{font-size:13px;font-weight:700;color:var(--text)}
+.box-tab .tb-price{font-size:10.5px;color:var(--light);margin-top:2px}
+.box-tab.on .tb-price{color:var(--rose-d);font-weight:600}
+.box-tab.no-pkg.on{border-color:#aaa;background:#f5f5f5}
+.box-tab.no-pkg.on .tb-price{color:#888}
+
+/* SLOTS */
+.slots-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.slot{
+  background:var(--card);border:2px dashed #e8d8d4;border-radius:14px;
+  padding:14px 12px;cursor:pointer;text-align:center;
+  transition:all .2s;min-height:96px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  box-shadow:var(--sh);
+}
+.slot:hover{border-color:var(--rose);box-shadow:var(--sh-md)}
+.slot.filled{border-style:solid;border-color:var(--rose);background:var(--rose-pale)}
+.slot .slot-num{font-size:10px;color:var(--light);font-weight:500;letter-spacing:1px}
+.slot .slot-emo{font-size:26px}
+.slot .slot-name{font-size:12px;font-weight:600;color:var(--text);line-height:1.3;word-break:keep-all}
+.slot .slot-price{font-size:11px;color:var(--rose-d);font-weight:600}
+.slot.empty .slot-emo{opacity:.35}
+.slot.empty .slot-hint{font-size:12px;color:var(--light)}
+.slot .slot-del{
+  margin-top:3px;font-size:10px;color:#ccc;
+  background:none;border:none;cursor:pointer;padding:2px 6px;
+  border-radius:20px;transition:all .15s;
+}
+.slot .slot-del:hover{background:#fee;color:var(--rose-d)}
+
+/* PER-SET PRICE BAR */
+.per-set-bar{
+  background:var(--card);border-radius:14px;padding:14px 18px;
+  box-shadow:var(--sh);display:flex;align-items:center;justify-content:space-between;
+  margin-top:12px;
+}
+.psb-label{font-size:12px;color:var(--light)}
+.psb-val{font-family:'Nanum Myeongjo',serif;font-size:20px;font-weight:700;color:var(--rose-d)}
+
+/* ITEM PICKER BOTTOM SHEET */
+.picker-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(30,10,10,.5);z-index:200;
+  align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(4px);
+}
+.picker-overlay.show{display:flex}
+.picker-sheet{
+  background:var(--card);border-radius:26px 26px 0 0;
+  padding:22px 16px 36px;width:100%;max-width:540px;
+  animation:slideUp .28s cubic-bezier(.34,1.2,.64,1);
+}
+@keyframes slideUp{from{transform:translateY(80px);opacity:0}to{transform:translateY(0);opacity:1}}
+.ps-handle{width:36px;height:4px;background:#e0d0cc;border-radius:2px;margin:0 auto 18px}
+.ps-title{font-family:'Nanum Myeongjo',serif;font-size:18px;font-weight:700;text-align:center;margin-bottom:4px}
+.ps-sub{text-align:center;font-size:12px;color:var(--light);margin-bottom:18px}
+.item-list{display:flex;flex-direction:column;gap:9px}
+.item-pick{
+  display:flex;align-items:center;gap:12px;
+  background:var(--bg);border:2px solid transparent;border-radius:14px;
+  padding:12px 14px;cursor:pointer;transition:all .18s;
+}
+.item-pick:hover{border-color:var(--rose-b);background:var(--rose-pale)}
+.ip-emo{font-size:28px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:12px;flex-shrink:0}
+.ip-info{flex:1}
+.ip-name{font-size:14px;font-weight:600;margin-bottom:3px}
+.ip-badge{
+  display:inline-block;font-size:10px;padding:2px 7px;border-radius:20px;margin-right:4px;font-weight:500;
+}
+.badge-s{background:var(--sage-pale);color:#4a7a45}
+.badge-c{background:var(--rose-pale);color:var(--rose-d)}
+.badge-m{background:var(--gold-pale);color:#8a6520}
+.ip-min{display:inline-block;font-size:10px;color:var(--light)}
+.ip-price{font-family:'Nanum Myeongjo',serif;font-size:17px;font-weight:700;color:var(--rose-d);flex-shrink:0}
+.ps-cancel{
+  width:100%;margin-top:14px;padding:13px;background:#f5ecea;border:none;border-radius:12px;
+  font-family:'Nanum Myeongjo',serif;font-size:15px;font-weight:700;color:var(--mid);cursor:pointer;
+}
+
+/* QTY */
+.qty-box{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:20px 18px}
+.qty-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.stepper{display:flex;align-items:center;border:2px solid var(--rose-b);border-radius:13px;overflow:hidden}
+.s-btn{width:46px;height:46px;border:none;background:transparent;font-size:20px;color:var(--rose-d);cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center}
+.s-btn:hover{background:var(--rose-pale)}
+.s-val{font-family:'Nanum Myeongjo',serif;font-size:24px;font-weight:700;width:64px;text-align:center;line-height:46px;border-left:1.5px solid var(--rose-b);border-right:1.5px solid var(--rose-b)}
+.qty-live{text-align:right}
+.qty-live-label{font-size:11px;color:var(--light);margin-bottom:2px}
+.qty-live-amt{font-family:'Nanum Myeongjo',serif;font-size:22px;font-weight:700;color:var(--rose-d)}
+.shortcuts{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.sc{padding:6px 14px;border:1.5px solid var(--rose-b);border-radius:30px;font-size:12px;color:var(--mid);cursor:pointer;background:transparent;transition:all .15s;font-family:'Noto Sans KR',sans-serif}
+.sc:hover,.sc.on{background:var(--rose-d);border-color:var(--rose-d);color:#fff}
+
+/* OPTION */
+.opt{
+  background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:16px 18px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;
+  border:2px solid transparent;transition:all .2s;
+}
+.opt:hover{box-shadow:var(--sh-md)}
+.opt.on{border-color:var(--gold);background:var(--gold-pale)}
+.opt-emo{font-size:26px;width:46px;height:46px;display:flex;align-items:center;justify-content:center;background:#f5f0e8;border-radius:12px;flex-shrink:0}
+.opt-info{flex:1}
+.opt-name{font-size:14px;font-weight:500;margin-bottom:2px}
+.opt-desc{font-size:11.5px;color:var(--light);line-height:1.5}
+.opt-price{font-size:14px;font-weight:700;color:var(--gold);flex-shrink:0}
+.toggle{width:44px;height:24px;border-radius:12px;background:#ddd;position:relative;transition:background .2s;flex-shrink:0}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.opt.on .toggle{background:var(--gold)}
+.opt.on .toggle::after{left:23px}
+
+/* STICKER */
+.sticker-box{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:20px 18px}
+.sticker-input{
+  width:100%;border:2px solid var(--rose-b);border-radius:12px;
+  padding:13px 14px;font-size:15px;font-family:'Noto Sans KR',sans-serif;
+  color:var(--text);outline:none;transition:border-color .2s;
+  background:var(--bg);
+}
+.sticker-input:focus{border-color:var(--rose-d);background:#fff}
+.sticker-input::placeholder{color:var(--light)}
+.char-counter{text-align:right;font-size:11px;color:var(--light);margin-top:6px}
+.char-counter.warn{color:var(--rose-d);font-weight:600}
+.no-pkg-notice{
+  display:flex;align-items:center;gap:10px;
+  padding:14px 16px;background:#f5f5f5;border-radius:12px;
+  font-size:13px;color:#888;
+}
+.no-pkg-notice .npn-icon{font-size:20px}
+
+/* TOTAL SUMMARY PREVIEW */
+.summary-preview{
+  background:var(--card);border-radius:var(--r);box-shadow:var(--sh);
+  padding:16px 18px;border-left:4px solid var(--rose);
+}
+.sp-row{display:flex;justify-content:space-between;font-size:13px;padding:4px 0;color:var(--mid)}
+.sp-row .v{font-weight:600;color:var(--text)}
+.sp-total{display:flex;justify-content:space-between;align-items:center;padding-top:10px;margin-top:8px;border-top:1.5px dashed var(--rose-b)}
+.sp-total-label{font-family:'Nanum Myeongjo',serif;font-size:16px;font-weight:700}
+.sp-total-val{font-family:'Nanum Myeongjo',serif;font-size:24px;font-weight:800;color:var(--rose-d)}
+
+/* BOTTOM BAR */
+.total-bar{
+  position:fixed;bottom:0;left:0;right:0;
+  background:rgba(255,255,255,.97);backdrop-filter:blur(10px);
+  border-top:1px solid var(--rose-b);padding:13px 16px;z-index:100;
+  box-shadow:0 -4px 20px rgba(180,100,80,.10);
+}
+.tbi{max-width:540px;margin:0 auto;display:flex;align-items:center;gap:14px}
+.tbi-info{flex:1;min-width:0}
+.tbi-label{font-size:11px;color:var(--light);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tbi-amt{font-family:'Nanum Myeongjo',serif;font-size:22px;font-weight:800}
+.tbi-amt em{color:var(--rose-d);font-style:normal}
+.order-btn{padding:13px 22px;border:none;border-radius:13px;font-family:'Nanum Myeongjo',serif;font-size:16px;font-weight:700;color:#fff;cursor:pointer;flex-shrink:0;background:linear-gradient(135deg,var(--rose-d),#c07075);box-shadow:0 4px 14px rgba(180,80,80,.3);transition:all .2s}
+.order-btn:hover{transform:translateY(-1px)}
+.order-btn:disabled{background:#ddd;color:#aaa;box-shadow:none;cursor:not-allowed;transform:none}
+
+/* CONFIRM SHEET */
+.overlay2{display:none;position:fixed;inset:0;background:rgba(30,10,10,.5);z-index:300;align-items:flex-end;justify-content:center;backdrop-filter:blur(4px)}
+.overlay2.show{display:flex}
+.sheet2{background:var(--card);border-radius:26px 26px 0 0;padding:24px 16px 40px;width:100%;max-width:540px;animation:slideUp .28s cubic-bezier(.34,1.2,.64,1);max-height:92vh;overflow-y:auto}
+.sh-handle{width:36px;height:4px;background:#e0d0cc;border-radius:2px;margin:0 auto 18px}
+.sh-title{font-family:'Nanum Myeongjo',serif;font-size:20px;font-weight:800;text-align:center;margin-bottom:4px}
+.sh-sub{text-align:center;font-size:12px;color:var(--light);margin-bottom:18px}
+.receipt{background:var(--bg);border-radius:14px;padding:16px;border:1px dashed var(--rose-b)}
+.r-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid #f0e8e6;font-size:13px}
+.r-row:last-child{border-bottom:none}
+.r-label{color:var(--mid);flex-shrink:0}
+.r-val{font-weight:600;text-align:right;max-width:65%}
+.r-total{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;margin-top:8px;border-top:2px solid var(--rose-b);font-family:'Nanum Myeongjo',serif}
+.r-total-label{font-size:18px;font-weight:700}
+.r-total-val{font-size:26px;font-weight:800;color:var(--rose-d)}
+.copy-box{margin-top:14px;padding:14px;background:#fafafa;border:1.5px dashed #ddd;border-radius:12px;font-size:11.5px;color:var(--mid);line-height:2;white-space:pre-wrap;font-family:monospace}
+.sh-btns{display:flex;gap:10px;margin-top:14px}
+.sh-btn{flex:1;padding:13px;border-radius:12px;border:none;font-family:'Nanum Myeongjo',serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s}
+.sh-btn:hover{opacity:.85}
+.sh-p{background:var(--rose-d);color:#fff;box-shadow:0 4px 14px rgba(180,80,80,.3)}
+.sh-s{background:#f5ecea;color:var(--mid)}
+
+/* VALIDATION */
+.val-msg{font-size:11.5px;color:#c0392b;margin-top:6px;min-height:16px;text-align:center}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(8px);background:#2d1f1a;color:#fff;padding:10px 22px;border-radius:30px;font-size:13px;opacity:0;transition:all .3s;z-index:400;pointer-events:none;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ANIM */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.slot{animation:fadeUp .3s ease both}
+.slot:nth-child(1){animation-delay:.03s}.slot:nth-child(2){animation-delay:.06s}
+.slot:nth-child(3){animation-delay:.09s}.slot:nth-child(4){animation-delay:.12s}
+.slot:nth-child(5){animation-delay:.15s}.slot:nth-child(6){animation-delay:.18s}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-img-wrap">
+    <img src="https://github.com/naroom-yeouido/naroom/blob/main/6.png?raw=true" alt="나룸 떡디저트" class="hero-img" onerror="this.parentElement.style.display='none'">
+  </div>
+  <div class="hero-inner">
+    <div class="hero-tag">🌸 나룸 여의도</div>
+    <h1><b>떡 선물 주문</b></h1>
+    <p class="hero-desc">원하시는 떡디저트를 담아주세요</p>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- STEP 1 -->
+  <div class="st">
+    <h2>① 박스 크기를 선택하세요</h2>
+    <p>포장 비용: 1구 700원 · 2/3/4/6구 1,000원 · 포장없음 0원</p>
+  </div>
+  <div class="box-tabs" id="boxTabs">
+    <div class="box-tab" data-box="1" onclick="selectBox(1)"><div class="tb-icon">🎁</div><div class="tb-name">1구</div><div class="tb-price">+700원</div></div>
+    <div class="box-tab" data-box="2" onclick="selectBox(2)"><div class="tb-icon">🎁</div><div class="tb-name">2구</div><div class="tb-price">+1,000원</div></div>
+    <div class="box-tab" data-box="3" onclick="selectBox(3)"><div class="tb-icon">🎁</div><div class="tb-name">3구</div><div class="tb-price">+1,000원</div></div>
+    <div class="box-tab" data-box="4" onclick="selectBox(4)"><div class="tb-icon">🎁</div><div class="tb-name">4구</div><div class="tb-price">+1,000원</div></div>
+    <div class="box-tab" data-box="6" onclick="selectBox(6)"><div class="tb-icon">🎁</div><div class="tb-name">6구</div><div class="tb-price">+1,000원</div></div>
+    <div class="box-tab no-pkg" data-box="none" onclick="selectBox('none')"><div class="tb-icon">🛍</div><div class="tb-name">포장없음</div><div class="tb-price">+0원</div></div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="st" style="margin-top:28px">
+    <h2>② 각 칸에 담을 떡을 골라요</h2>
+    <p id="slotGuide">박스 크기를 먼저 선택해주세요</p>
+  </div>
+  <div class="slots-grid" id="slotsGrid">
+    <div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--light);font-size:13px">
+      <span style="font-size:30px;display:block;margin-bottom:8px;opacity:.4">👆</span>
+      위에서 박스 크기를 먼저 선택해주세요
+    </div>
+  </div>
+
+  <!-- 세트 단가 -->
+  <div class="per-set-bar" id="perSetBar" style="display:none">
+    <div>
+      <div style="font-size:11px;color:var(--light);margin-bottom:2px">1세트 금액</div>
+      <div class="psb-val" id="perSetAmt">—</div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:11px;color:var(--light);margin-bottom:2px">구성</div>
+      <div id="perSetItems" style="font-size:12px;color:var(--mid)">—</div>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="st" style="margin-top:28px">
+    <h2>③ 몇 세트 주문하시나요?</h2>
+  </div>
+  <div class="qty-box">
+    <div class="qty-row">
+      <div>
+        <div class="stepper">
+          <button class="s-btn" onclick="chQty(-10)">−−</button>
+          <button class="s-btn" onclick="chQty(-1)" style="border-left:1.5px solid var(--rose-b)">−</button>
+          <div class="s-val" id="qtyDisp">50</div>
+          <button class="s-btn" onclick="chQty(1)" style="border-right:1.5px solid var(--rose-b)">+</button>
+          <button class="s-btn" onclick="chQty(10)">++</button>
+        </div>
+        <div style="font-size:11px;color:var(--light);margin-top:6px">세트</div>
+      </div>
+      <div class="qty-live">
+        <div class="qty-live-label">세트 소계</div>
+        <div class="qty-live-amt" id="liveAmt">—</div>
+      </div>
+    </div>
+    <div class="shortcuts">
+      <button class="sc" onclick="sQty(10)">10</button>
+      <button class="sc" onclick="sQty(30)">30</button>
+      <button class="sc on" onclick="sQty(50)">50</button>
+      <button class="sc" onclick="sQty(80)">80</button>
+      <button class="sc" onclick="sQty(100)">100</button>
+    </div>
+  </div>
+
+  <!-- 추가 옵션 -->
+  <div class="st" style="margin-top:28px">
+    <h2>④ 추가 옵션 <span style="font-size:13px;font-weight:400;color:var(--light)">(선택)</span></h2>
+  </div>
+  <div class="opt" id="optBag" onclick="toggleBag()">
+    <div class="opt-emo">🛍️</div>
+    <div class="opt-info">
+      <div class="opt-name">종이 가방 추가</div>
+      <div class="opt-desc">세트당 +1,000원 · 더 고급스럽게 전달</div>
+    </div>
+    <div class="opt-price">+1,000원</div>
+    <div class="toggle"></div>
+  </div>
+
+  <!-- STEP 5 - 답례문구 -->
+  <div class="st" style="margin-top:28px">
+    <h2>⑤ 답례 문구 <span style="font-size:13px;font-weight:400;color:var(--light)">(스티커 인쇄용)</span></h2>
+    <p id="stickerGuide">포장 박스 스티커에 인쇄할 문구를 입력해주세요</p>
+  </div>
+  <div class="sticker-box" id="stickerBox">
+    <!-- 포장없음일 때 -->
+    <div class="no-pkg-notice" id="noPkgNotice" style="display:none">
+      <span class="npn-icon">🚫</span>
+      <span>포장없음 선택 시 스티커가 없어요</span>
+    </div>
+    <!-- 입력 영역 -->
+    <div id="stickerInputArea">
+      <input type="text" class="sticker-input" id="stickerText" maxlength="25"
+             placeholder="예) 감사합니다 🌸"
+             oninput="onStickerInput(this)">
+      <div class="char-counter" id="charCounter">0 / 25자</div>
+    </div>
+  </div>
+
+  <!-- 합계 미리보기 -->
+  <div class="st" style="margin-top:28px">
+    <h2>💰 예상 금액</h2>
+  </div>
+  <div class="summary-preview" id="summaryPreview">
+    <div class="sp-row"><span>세트 금액</span><span class="v" id="spSet">—</span></div>
+    <div class="sp-row" id="spBagRow" style="display:none"><span>종이 가방</span><span class="v" id="spBag">—</span></div>
+    <div class="sp-total">
+      <span class="sp-total-label">총 합계</span>
+      <span class="sp-total-val" id="spTotal">—</span>
+    </div>
+  </div>
+  <div class="val-msg" id="valMsg"></div>
+
+</div>
+
+<!-- 하단 바 -->
+<div class="total-bar">
+  <div class="tbi">
+    <div class="tbi-info">
+      <div class="tbi-label" id="tblLabel">세트를 구성해주세요</div>
+      <div class="tbi-amt" id="tblAmt">—</div>
+    </div>
+    <button class="order-btn" id="orderBtn" onclick="openConfirm()" disabled>주문하기</button>
+  </div>
+</div>
+
+<!-- 아이템 선택 시트 -->
+<div class="picker-overlay" id="pickerOverlay">
+  <div class="picker-sheet">
+    <div class="ps-handle"></div>
+    <div class="ps-title" id="psTitle">떡을 선택하세요</div>
+    <div class="ps-sub" id="psSub"></div>
+    <div class="item-list" id="itemList"></div>
+    <button class="ps-cancel" onclick="closePicker()">취소</button>
+  </div>
+</div>
+
+<!-- 주문 확인 시트 -->
+<div class="overlay2" id="overlay2">
+  <div class="sheet2">
+    <div class="sh-handle"></div>
+    <div class="sh-title">🎀 주문 내역 확인</div>
+    <div class="sh-sub">아래 내용을 확인 후 복사해서 전달해주세요</div>
+    <div class="receipt">
+      <div id="sheetRows"></div>
+      <div class="r-total">
+        <div class="r-total-label">총 합계</div>
+        <div class="r-total-val" id="sheetTotal"></div>
+      </div>
+    </div>
+    <div class="copy-box" id="copyBox"></div>
+    <div class="sh-btns">
+      <button class="sh-btn sh-s" onclick="closeConfirm()">닫기</button>
+      <button class="sh-btn sh-p" onclick="copyOrder()">📋 복사하기</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">✅ 복사됐어요!</div>
+
+<script>
+const ITEMS = [
+  { id:'peach',   emo:'🍑', name:'복숭아 모나카',    price:5000, type:'monaka', typeLabel:'모나카', badgeCls:'badge-m', min:10 },
+  { id:'angeum',  emo:'🌸', name:'앙금꽃 쁘띠설기', price:5000, type:'seolgi', typeLabel:'설기',  badgeCls:'badge-s', min:6  },
+  { id:'rainbow', emo:'🌈', name:'무지개 설기',      price:4500, type:'seolgi', typeLabel:'설기',  badgeCls:'badge-s', min:6  },
+  { id:'crumble', emo:'🌼', name:'크럼블 설기',      price:4500, type:'seolgi', typeLabel:'설기',  badgeCls:'badge-s', min:6  },
+  { id:'rabbit',  emo:'🐰', name:'달맞이 토끼 찰떡', price:4500, type:'chal',   typeLabel:'찰떡',  badgeCls:'badge-c', min:10 },
+  { id:'clover',  emo:'🍀', name:'크로바 찰떡',      price:4000, type:'chal',   typeLabel:'찰떡',  badgeCls:'badge-c', min:10 },
+];
+const BOX_PRICE = { 1:700, 2:1000, 3:1000, 4:1000, 6:1000, 'none':0 };
+
+let curBox = null;
+let slots = [];
+let qty = 50;
+let bagOn = false;
+let activeSlot = null;
+
+function fmt(n){ return n.toLocaleString('ko-KR')+'원'; }
+function itemById(id){ return ITEMS.find(i=>i.id===id); }
+
+/* ── STICKER INPUT ── */
+function onStickerInput(el) {
+  const len = el.value.length;
+  const counter = document.getElementById('charCounter');
+  counter.textContent = `${len} / 25자`;
+  counter.classList.toggle('warn', len >= 20);
+}
+
+function updateStickerSection() {
+  const isNone = curBox === 'none';
+  document.getElementById('noPkgNotice').style.display = isNone ? 'flex' : 'none';
+  document.getElementById('stickerInputArea').style.display = isNone ? 'none' : 'block';
+  document.getElementById('stickerGuide').textContent = isNone
+    ? '포장없음 선택 시 스티커가 없어요'
+    : '포장 박스 스티커에 인쇄할 문구를 입력해주세요';
+}
+
+/* ── BOX SELECT ── */
+function selectBox(n) {
+  document.querySelectorAll('.box-tab').forEach(el => {
+    const v = el.dataset.box;
+    const val = isNaN(v) ? v : parseInt(v);
+    el.classList.toggle('on', val === n);
+  });
+  curBox = n;
+
+  if (n === 'none') {
+    slots = [null]; // 1개 슬롯 (떡 종류 1개 선택)
+    document.getElementById('slotGuide').textContent = '포장없음 — 떡 종류를 선택해주세요';
+  } else {
+    slots = new Array(n).fill(null);
+    document.getElementById('slotGuide').textContent =
+      `${n}개의 칸에 담을 떡을 각각 골라주세요 (같은 것 여러 개도 OK)`;
+  }
+
+  renderSlots();
+  document.getElementById('perSetBar').style.display = 'flex';
+
+  // 종이가방 비활성화 조건: 1구 또는 포장없음
+  const optBag = document.getElementById('optBag');
+  if (n === 1 || n === 'none') {
+    if (bagOn) { bagOn = false; optBag.classList.remove('on'); }
+    optBag.style.opacity = '0.4';
+    optBag.style.pointerEvents = 'none';
+    optBag.querySelector('.opt-desc').textContent = n === 'none'
+      ? '포장없음은 종이가방 선택 불가'
+      : '1구 박스는 종이가방 선택 불가';
+  } else {
+    optBag.style.opacity = '1';
+    optBag.style.pointerEvents = 'auto';
+    optBag.querySelector('.opt-desc').textContent = '세트당 +1,000원 · 더 고급스럽게 전달';
+  }
+
+  updateStickerSection();
+  updateUI();
+}
+
+/* ── RENDER SLOTS ── */
+function renderSlots() {
+  const grid = document.getElementById('slotsGrid');
+  if (!slots.length) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:24px;color:var(--light);font-size:13px"><span style="font-size:30px;display:block;margin-bottom:8px;opacity:.4">👆</span>위에서 박스 크기를 먼저 선택해주세요</div>';
+    return;
+  }
+  grid.innerHTML = slots.map((itemId, i) => {
+    const item = itemId ? itemById(itemId) : null;
+    const label = curBox === 'none' ? '떡 종류' : `${i+1}번 칸`;
+    return `<div class="slot ${item?'filled':'empty'}" onclick="openPicker(${i})">
+      <div class="slot-num">${label}</div>
+      ${item
+        ? `<div class="slot-emo">${item.emo}</div>
+           <div class="slot-name">${item.name}</div>
+           <div class="slot-price">${fmt(item.price)}</div>
+           <button class="slot-del" onclick="clearSlot(event,${i})">✕ 빼기</button>`
+        : `<div class="slot-emo">➕</div>
+           <div class="slot-hint">탭해서 선택</div>`
+      }
+    </div>`;
+  }).join('');
+}
+
+function clearSlot(e, i) {
+  e.stopPropagation();
+  slots[i] = null;
+  renderSlots();
+  updateUI();
+}
+
+/* ── PICKER ── */
+function openPicker(slotIdx) {
+  activeSlot = slotIdx;
+  const label = curBox === 'none' ? '포장없음' : `${slotIdx+1}번 칸`;
+  document.getElementById('psTitle').textContent = `${label}에 담을 떡 선택`;
+  document.getElementById('psSub').textContent = '아래 중 하나를 골라주세요';
+  const list = document.getElementById('itemList');
+  list.innerHTML = ITEMS.map(item => `
+    <div class="item-pick" onclick="pickItem('${item.id}')">
+      <div class="ip-emo">${item.emo}</div>
+      <div class="ip-info">
+        <div class="ip-name">${item.name}</div>
+        <span class="ip-badge ${item.badgeCls}">${item.typeLabel}</span>
+        <span class="ip-min">최소 ${item.min}개 이상</span>
+      </div>
+      <div class="ip-price">${fmt(item.price)}</div>
+    </div>`).join('');
+  document.getElementById('pickerOverlay').classList.add('show');
+}
+
+function pickItem(itemId) {
+  slots[activeSlot] = itemId;
+  closePicker();
+  renderSlots();
+  updateUI();
+}
+
+function closePicker() {
+  document.getElementById('pickerOverlay').classList.remove('show');
+  activeSlot = null;
+}
+
+/* ── QTY ── */
+function chQty(d){ qty=Math.max(1,qty+d); document.getElementById('qtyDisp').textContent=qty; syncSC(); updateUI(); }
+function sQty(n){ qty=n; document.getElementById('qtyDisp').textContent=n; syncSC(); updateUI(); }
+function syncSC(){ document.querySelectorAll('.sc').forEach(b=>b.classList.toggle('on',parseInt(b.textContent)===qty)); }
+
+/* ── BAG ── */
+function toggleBag(){ bagOn=!bagOn; document.getElementById('optBag').classList.toggle('on',bagOn); updateUI(); }
+
+/* ── UPDATE UI ── */
+function updateUI() {
+  const filled = slots.filter(Boolean).length;
+  const slotCount = slots.length;
+  const allFilled = curBox !== null && filled === slotCount && slotCount > 0;
+  const boxPrice = curBox ? (BOX_PRICE[curBox] || 0) : 0;
+  const itemsTotal = slots.reduce((s,id)=>s+(id?itemById(id).price:0),0);
+  const perSet = itemsTotal + boxPrice;
+  const setTotal = perSet * qty;
+  const bagTotal = bagOn ? 1000 * qty : 0;
+  const total = setTotal + bagTotal;
+
+  // per-set bar
+  if (curBox) {
+    document.getElementById('perSetAmt').textContent = allFilled ? fmt(perSet) : '—';
+    document.getElementById('perSetItems').textContent = allFilled
+      ? slots.map(id=>itemById(id).emo).join(' ')
+      : `${filled}/${slotCount}개 선택됨`;
+  }
+
+  // live
+  document.getElementById('liveAmt').textContent = allFilled ? fmt(setTotal) : '—';
+
+  // summary preview
+  document.getElementById('spSet').textContent = allFilled ? `${fmt(perSet)} × ${qty}세트 = ${fmt(setTotal)}` : '—';
+  const bagRow = document.getElementById('spBagRow');
+  if (bagOn) {
+    bagRow.style.display='flex';
+    document.getElementById('spBag').textContent = `1,000원 × ${qty}개 = ${fmt(bagTotal)}`;
+  } else {
+    bagRow.style.display='none';
+  }
+  document.getElementById('spTotal').textContent = allFilled ? fmt(total) : '—';
+
+  // bottom bar
+  const boxLabel = curBox === 'none' ? '포장없음' : `${curBox}구 박스`;
+  if (allFilled) {
+    document.getElementById('tblLabel').textContent =
+      `${boxLabel} × ${qty}세트${bagOn?' + 가방':''}`;
+    document.getElementById('tblAmt').innerHTML = `<em>${fmt(total)}</em>`;
+    document.getElementById('orderBtn').disabled = false;
+  } else {
+    document.getElementById('tblLabel').textContent = curBox
+      ? `${filled}/${slotCount}개 선택 중...`
+      : '박스 크기를 먼저 선택해주세요';
+    document.getElementById('tblAmt').textContent = '—';
+    document.getElementById('orderBtn').disabled = true;
+  }
+}
+
+/* ── VALIDATE ── */
+function validate() {
+  const needed = {};
+  slots.forEach(id=>{
+    if (!id) return;
+    needed[id] = (needed[id]||0) + qty;
+  });
+  const errors = [];
+  Object.entries(needed).forEach(([id,cnt])=>{
+    const item = itemById(id);
+    if (cnt < item.min) {
+      errors.push(`${item.name}: 최소 ${item.min}개 필요 (현재 ${cnt}개)`);
+    }
+  });
+  return errors;
+}
+
+/* ── CONFIRM ── */
+function openConfirm() {
+  const errors = validate();
+  const valEl = document.getElementById('valMsg');
+  if (errors.length) {
+    valEl.textContent = '⚠ ' + errors[0];
+    return;
+  }
+  valEl.textContent = '';
+
+  const boxPrice = BOX_PRICE[curBox] || 0;
+  const itemsTotal = slots.reduce((s,id)=>s+itemById(id).price,0);
+  const perSet = itemsTotal + boxPrice;
+  const setTotal = perSet * qty;
+  const bagTotal = bagOn ? 1000 * qty : 0;
+  const total = setTotal + bagTotal;
+  const stickerText = curBox !== 'none' ? document.getElementById('stickerText').value.trim() : '';
+  const boxLabel = curBox === 'none' ? '포장없음' : `${curBox}구 박스`;
+
+  const countMap = {};
+  slots.forEach(id=>{ countMap[id]=(countMap[id]||0)+1; });
+  const itemSummary = Object.entries(countMap)
+    .map(([id,cnt])=>{ const it=itemById(id); return cnt>1?`${it.name} ×${cnt}`:it.name; })
+    .join(' + ');
+  const emoSummary = slots.map(id=>itemById(id).emo).join(' ');
+
+  const prodLines = Object.entries(countMap)
+    .map(([id,cnt])=>{ const it=itemById(id); return `  • ${it.name}: ${cnt*qty}개`; })
+    .join('\n');
+
+  let rows = `
+    <div class="r-row"><span class="r-label">포장</span><span class="r-val">${boxLabel}</span></div>
+    <div class="r-row"><span class="r-label">구성</span><span class="r-val">${emoSummary}<br><small style="color:var(--mid);font-weight:400">${itemSummary}</small></span></div>
+    <div class="r-row"><span class="r-label">세트 단가</span><span class="r-val">${fmt(perSet)}</span></div>
+    <div class="r-row"><span class="r-label">수량</span><span class="r-val">${qty}세트</span></div>`;
+  if (bagOn) rows += `<div class="r-row"><span class="r-label">종이 가방</span><span class="r-val">+${fmt(bagTotal)}</span></div>`;
+  if (stickerText) rows += `<div class="r-row"><span class="r-label">답례 문구</span><span class="r-val">${stickerText}</span></div>`;
+
+  document.getElementById('sheetRows').innerHTML = rows;
+  document.getElementById('sheetTotal').textContent = fmt(total);
+
+  const copyLines = [
+    '📦 결혼 답례품 주문서',
+    '────────────────',
+    `포장: ${boxLabel}`,
+    `구성: ${itemSummary}`,
+    `세트 단가: ${fmt(perSet)}`,
+    `수량: ${qty}세트`,
+    bagOn ? `종이 가방: ${qty}개 (+${fmt(bagTotal)})` : null,
+    stickerText ? `답례 문구: ${stickerText}` : null,
+    '────────────────',
+    `합계: ${fmt(total)}`,
+    '',
+    '[생산 필요 수량]',
+    prodLines,
+  ].filter(l=>l!==null).join('\n');
+
+  document.getElementById('copyBox').textContent = copyLines;
+  document.getElementById('overlay2').classList.add('show');
+}
+
+function closeConfirm(){ document.getElementById('overlay2').classList.remove('show'); }
+
+function copyOrder(){
+  navigator.clipboard.writeText(document.getElementById('copyBox').textContent).then(()=>{
+    const t=document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2200);
+  });
+}
+
+updateUI();
+</script>
+</body>
+</html>
