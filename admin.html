@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="robots" content="noindex,nofollow"><title>나룸 · 관리</title><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:#fff;color:#2D2D2D}
+.hidden{display:none!important}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px 120px;min-height:100vh}
+.top{text-align:center;padding:26px 0 14px}
+.brand{font-size:11px;font-weight:700;color:#C8929A;letter-spacing:2px;margin-bottom:6px}
+.top h1{font-size:20px;font-weight:900}
+.top p{font-size:12px;color:#AAA;margin-top:5px;line-height:1.6}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none;position:sticky;top:0;background:#fff;z-index:20}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:8px 12px;border:1.5px solid #EEE;border-radius:20px;font-size:12px;font-weight:800;color:#888;background:#fff;cursor:pointer;text-decoration:none;white-space:nowrap}
+.tab:active{border-color:#C8929A;color:#C8929A}
+.sec{margin-top:26px;padding-top:6px}
+.sec h2{font-size:16px;font-weight:900;margin-bottom:4px}
+.sec .desc{font-size:12px;color:#AAA;line-height:1.6;margin-bottom:12px}
+.lbl{display:block;font-size:11px;font-weight:700;color:#AAA;letter-spacing:.3px;margin:14px 0 6px}
+.lbl.t0{margin-top:0}
+input[type=text],input[type=password],input[type=date],input[type=number],input[type=url],select,textarea{width:100%;padding:11px 12px;border:1.5px solid #EEE;border-radius:10px;font-size:14px;background:#fff;color:#2D2D2D;font-family:inherit;outline:none;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:#C8929A}
+textarea{min-height:70px;line-height:1.6;resize:vertical}
+select{background-image:linear-gradient(45deg,transparent 50%,#BBB 50%),linear-gradient(135deg,#BBB 50%,transparent 50%);background-position:calc(100% - 16px) 50%,calc(100% - 11px) 50%;background-size:5px 5px;background-repeat:no-repeat}
+.row{display:flex;gap:8px;align-items:center}
+.row>*{flex:1}
+.row .fix{flex:0 0 auto}
+.card{border:1.5px solid #EEE;border-radius:14px;padding:14px;margin-bottom:10px;background:#fff}
+.card.off{background:#FAFAFA}
+.tg{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1.5px solid #EEE;border-radius:12px;cursor:pointer;background:#fff;-webkit-tap-highlight-color:transparent;margin-bottom:8px}
+.tg.on{border-color:#C8929A;background:#FFF5F6}
+.tg-name{font-size:13px;font-weight:700}
+.tg-sub{font-size:11px;color:#AAA;margin-top:2px}
+.sw{width:42px;height:24px;border-radius:12px;background:#E5E5E5;position:relative;flex-shrink:0;transition:background .2s}
+.sw::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s}
+.tg.on .sw{background:#C8929A}
+.tg.on .sw::after{left:21px}
+.btn{padding:11px 14px;border:1.5px solid #EEE;border-radius:10px;background:#fff;font-size:13px;font-weight:800;color:#666;cursor:pointer;font-family:inherit;white-space:nowrap}
+.btn.p{background:#C8929A;border-color:#C8929A;color:#fff}
+.btn.s{padding:7px 10px;font-size:12px}
+.btn.danger{color:#C04040}
+.btn:disabled{opacity:.45;cursor:default}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1.5px solid #EEE;border-radius:20px;font-size:12px;font-weight:700;color:#555;background:#fff}
+.chip b{color:#C8929A;cursor:pointer;font-size:14px;line-height:1}
+.slot-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.slot{padding:9px 4px;border:1.5px solid #EEE;border-radius:9px;text-align:center;font-size:12px;font-weight:700;color:#555;cursor:pointer;background:#fff}
+.slot.on{border-color:#C04040;background:#FFF0F0;color:#C04040}
+.slot-lbl{grid-column:span 3;font-size:11px;font-weight:800;color:#888;margin-top:4px}
+.list-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 12px;border:1.5px solid #EEE;border-radius:10px;margin-bottom:6px;font-size:13px}
+.list-item small{color:#AAA;display:block;font-size:11px;margin-top:2px}
+.gi{border:1.5px solid #EEE;border-radius:14px;margin-bottom:12px;overflow:hidden;background:#fff}
+.gi.soldout{background:#FAFAFA}
+.gi-head{display:flex;gap:12px;padding:12px}
+.gi-img{width:84px;height:84px;object-fit:cover;border-radius:10px;background:#FAF7F7;border:1px solid #F0EDED;flex-shrink:0}
+.gi-title{font-size:14px;font-weight:900;flex:1;min-width:0}
+.gi-title small{display:block;font-size:11px;color:#AAA;font-weight:400;margin-top:3px}
+.gi-tools{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.gi-body{padding:0 12px 12px;border-top:1px solid #F5F0F0}
+.mini{font-size:11px;color:#AAA;margin-top:5px;line-height:1.5}
+.preview{background:linear-gradient(135deg,#FFF6E9 0%,#FDEFF2 100%);border:1.5px solid #E8C9A0;border-radius:14px;padding:13px 15px;margin-top:10px;display:flex;align-items:center;gap:12px}
+.preview .nt-tag{display:inline-block;background:#C8929A;color:#fff;font-size:10px;font-weight:900;border-radius:999px;padding:2px 8px}
+.preview .nt-title{display:block;margin-top:5px;font-size:14px;font-weight:900;color:#4A3B33}
+.preview .nt-sub{display:block;margin-top:3px;font-size:11.5px;color:#8A6D3B;line-height:1.65}
+.preview .nt-sub b{color:#C0392B;font-weight:900}
+.preview .nt-go{flex-shrink:0;font-size:12px;font-weight:900;color:#C8929A}
+.savebar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid #EEE;padding:12px 16px;z-index:30}
+.savebar .in{max-width:520px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.savebar .st{flex:1;font-size:12px;color:#AAA;font-weight:700}
+.savebar .st.dirty{color:#C8929A}
+.savebar .btn.p{flex:0 0 auto;padding:13px 22px;font-size:14px}
+.toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:#2D2D2D;color:#fff;font-size:13px;font-weight:700;padding:10px 18px;border-radius:20px;opacity:0;pointer-events:none;transition:opacity .25s;z-index:40;white-space:nowrap}
+.toast.show{opacity:1}
+.login{max-width:360px;margin:60px auto 0;text-align:center}
+.login h1{font-size:18px;font-weight:900;margin:10px 0 18px}
+.err{font-size:12px;color:#C04040;font-weight:700;margin-top:8px;min-height:16px}
+.linkline{font-size:12px;color:#C8929A;font-weight:800;text-decoration:none}
+.foot{margin-top:40px;font-size:11px;color:#CCC;text-align:center;line-height:1.8}
+</style></head>
+<body>
+
+<!-- 로그인 -->
+<div id="login-screen" class="login">
+  <div class="brand">NAROOM · 나룸</div>
+  <h1>관리 페이지</h1>
+  <input type="password" id="pw" placeholder="비밀번호" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()" />
+  <div class="err" id="login-err"></div>
+  <button class="btn p" style="width:100%;padding:13px" onclick="doLogin()">들어가기</button>
+</div>
+
+<!-- 관리 화면 -->
+<div id="admin-screen" class="wrap hidden">
+  <div class="top"><div class="brand">NAROOM · 나룸</div><h1>주문페이지 관리</h1><p>고친 뒤 아래 <b>저장하기</b>를 누르면 손님 페이지에 바로 반영됩니다.<br><a class="linkline" href="naroom.html" target="_blank" rel="noopener">손님 페이지 열어보기 →</a></p></div>
+  <div class="tabs">
+    <a class="tab" href="#s-notice">시즌 공지</a><a class="tab" href="#s-dates">마감 날짜</a><a class="tab" href="#s-times">마감 시간</a><a class="tab" href="#s-special">특별 운영일</a><a class="tab" href="#s-gift">답례 구성</a><a class="tab" href="#s-pw">비밀번호</a>
+  </div>
+
+  <!-- 시즌 공지 -->
+  <div class="sec" id="s-notice">
+    <h2>시즌 공지</h2>
+    <div class="desc">손님 페이지 맨 위에 한 칸으로 보입니다. 종료일이 지나면 저절로 사라져요.</div>
+    <div class="tg" id="n-on" onclick="tog('n-on',()=>{CFG.notice.on=!CFG.notice.on;dirty();renderNoticePreview();})"><div><div class="tg-name">공지 보이기</div><div class="tg-sub">끄면 손님 페이지에서 바로 사라져요</div></div><div class="sw"></div></div>
+    <span class="lbl">작은 라벨 <span style="font-weight:400">(예: CHUSEOK GIFT, 사전예약 혜택)</span></span>
+    <input type="text" id="n-tag" oninput="CFG.notice.tag=this.value;dirty();renderNoticePreview()" />
+    <span class="lbl">제목</span>
+    <input type="text" id="n-title" oninput="CFG.notice.title=this.value;dirty();renderNoticePreview()" />
+    <span class="lbl">설명 <span style="font-weight:400">(빨갛게 강조할 부분은 **이렇게** 감싸주세요)</span></span>
+    <textarea id="n-sub" oninput="CFG.notice.sub=toHtml(this.value);dirty();renderNoticePreview()"></textarea>
+    <span class="lbl">눌렀을 때 이동할 주소 <span style="font-weight:400">(없으면 비워두세요)</span></span>
+    <input type="url" id="n-link" placeholder="https://" oninput="CFG.notice.link=this.value.trim();dirty();renderNoticePreview()" />
+    <span class="lbl">종료일 <span style="font-weight:400">(이 날까지 보이고 다음 날부터 자동 숨김)</span></span>
+    <input type="date" id="n-until" onchange="CFG.notice.until=this.value;dirty();renderNoticePreview()" />
+    <span class="lbl">미리보기</span>
+    <div id="n-preview"></div>
+  </div>
+
+  <!-- 마감 날짜 -->
+  <div class="sec" id="s-dates">
+    <h2>마감 날짜</h2>
+    <div class="desc">그날은 손님이 "예약이 마감되었습니다"로 봅니다. 월요일은 원래 쉬는 날이라 따로 넣지 않아도 돼요.</div>
+    <div class="row"><input type="date" id="bd-date" /><button class="btn fix" onclick="addBlockedDate()">마감 추가</button></div>
+    <div class="chips" id="bd-list"></div>
+  </div>
+
+  <!-- 마감 시간 -->
+  <div class="sec" id="s-times">
+    <h2>마감 시간</h2>
+    <div class="desc">특정 날짜의 일부 시간칸만 막을 때. 날짜를 고른 뒤 막을 칸을 탭하세요(빨간색 = 마감).</div>
+    <input type="date" id="bt-date" onchange="renderSlotGrid()" />
+    <div class="slot-grid" id="bt-grid"></div>
+    <span class="lbl">마감된 시간 목록</span>
+    <div id="bt-list"></div>
+  </div>
+
+  <!-- 특별 운영일 -->
+  <div class="sec" id="s-special">
+    <h2>특별 운영일</h2>
+    <div class="desc">월요일인데 예외로 여는 날, 명절처럼 시간이 평소와 다른 날. 그날은 여기 적은 시간으로만 예약을 받아요.</div>
+    <span class="lbl t0">날짜</span>
+    <input type="date" id="sp-date" />
+    <span class="lbl">공방 픽업</span>
+    <div class="row"><select id="sp-y1"></select><span class="fix" style="color:#AAA">~</span><select id="sp-y2"></select></div>
+    <span class="lbl">무인 픽업 <span style="font-weight:400">(없으면 "없음")</span></span>
+    <div class="row"><select id="sp-m1"></select><span class="fix" style="color:#AAA">~</span><select id="sp-m2"></select></div>
+    <button class="btn" style="width:100%;margin-top:12px" onclick="addSpecial()">특별 운영일 추가</button>
+    <div id="sp-list" style="margin-top:10px"></div>
+  </div>
+
+  <!-- 답례 구성 -->
+  <div class="sec" id="s-gift">
+    <h2>답례 구성</h2>
+    <div class="desc">손님 답례 주문서에 보이는 순서 그대로입니다. 품절은 "마감"으로 표시되고 담을 수 없어요.</div>
+    <div id="gi-list"></div>
+    <button class="btn" style="width:100%" onclick="addGift()">＋ 구성 추가</button>
+  </div>
+
+  <!-- 비밀번호 -->
+  <div class="sec" id="s-pw">
+    <h2>비밀번호 변경</h2>
+    <div class="desc">이 관리 페이지에 들어올 때 쓰는 비밀번호입니다. 6자 이상.</div>
+    <input type="password" id="pw-new" placeholder="새 비밀번호" autocomplete="new-password" />
+    <div class="row" style="margin-top:8px"><input type="password" id="pw-new2" placeholder="한 번 더" autocomplete="new-password" /><button class="btn fix" onclick="changePw()">변경</button></div>
+    <div class="err" id="pw-err"></div>
+    <button class="btn" style="width:100%;margin-top:18px" onclick="logout()">로그아웃</button>
+  </div>
+
+  <div class="foot">케이크 가격·구성은 naroom.html 파일 안에 있어요. 바꿀 일이 있으면 알려주세요.</div>
+</div>
+
+<div class="savebar hidden" id="savebar"><div class="in"><div class="st" id="save-st">변경 없음</div><button class="btn p" id="save-btn" onclick="saveAll()">저장하기</button></div></div>
+<div class="toast" id="toast"></div>
+
+<script src="naroom-config.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const PW_KEY='naroom_admin_pw';
+let CFG=null, isDirty=false;
+const fmt=n=>(Number(n)||0).toLocaleString()+'원';
+const esc=s=>String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+// 설명 텍스트 ↔ HTML (**강조** → <b>, 줄바꿈 → <br>)
+function toHtml(t){return esc(t).replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\n/g,'<br>');}
+function toText(h){return String(h||'').replace(/<br\s*\/?>/gi,'\n').replace(/<b>(.*?)<\/b>/gi,'**$1**').replace(/<[^>]+>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&amp;/g,'&');}
+const DN=['일','월','화','수','목','금','토'];
+function dstr(d){const dt=new Date(d+'T00:00:00');return isNaN(dt)?d:`${dt.getMonth()+1}/${dt.getDate()}(${DN[dt.getDay()]})`;}
+
+/* ---- 서버 ---- */
+async function rpc(name,body){
+  const r=await fetch(SUPA_URL+'/rest/v1/rpc/'+name,{method:'POST',headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'application/json'},body:JSON.stringify(body||{})});
+  if(!r.ok){let m='';try{m=(await r.json()).message||'';}catch(e){}throw new Error(m||('HTTP '+r.status));}
+  const t=await r.text();return t?JSON.parse(t):null;
+}
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+function dirty(){isDirty=true;const s=$('#save-st');s.textContent='저장하지 않은 변경이 있어요';s.className='st dirty';}
+window.addEventListener('beforeunload',e=>{if(isDirty){e.preventDefault();e.returnValue='';}});
+
+/* ---- 로그인 ---- */
+async function doLogin(){
+  const pw=$('#pw').value;$('#login-err').textContent='';
+  try{const ok=await rpc('naroom_site_login',{p_pw:pw});if(!ok){$('#login-err').textContent='비밀번호가 맞지 않아요';return;}}
+  catch(e){$('#login-err').textContent='연결에 실패했어요: '+e.message;return;}
+  sessionStorage.setItem(PW_KEY,pw);enter();
+}
+function logout(){sessionStorage.removeItem(PW_KEY);location.reload();}
+async function enter(){
+  $('#login-screen').classList.add('hidden');$('#admin-screen').classList.remove('hidden');$('#savebar').classList.remove('hidden');
+  let saved={};try{saved=await rpc('naroom_site_get')||{};}catch(e){toast('저장된 설정을 못 불러왔어요');}
+  CFG={
+    notice:Object.assign({on:true,tag:'',title:'',sub:'',link:'',until:''},NOTICE,saved.notice||{}),
+    blocked_dates:Array.isArray(saved.blocked_dates)?saved.blocked_dates.slice():BLOCKED_DATES.slice(),
+    blocked_times:saved.blocked_times&&typeof saved.blocked_times==='object'?JSON.parse(JSON.stringify(saved.blocked_times)):JSON.parse(JSON.stringify(BLOCKED_TIMES)),
+    special_hours:saved.special_hours&&typeof saved.special_hours==='object'?JSON.parse(JSON.stringify(saved.special_hours)):JSON.parse(JSON.stringify(SPECIAL_HOURS)),
+    gift_items:(Array.isArray(saved.gift_items)&&saved.gift_items.length?saved.gift_items:GIFT_ITEMS).map(it=>({id:it.id||('g'+Date.now()),name:it.name||'',price:Number(it.price)||0,min:Number(it.min)||1,weekday:!!it.weekday,img:it.img||'',desc:it.desc||'',items:it.items||'',best:!!it.best,soldout:!!it.soldout})),
+  };
+  renderAll();
+}
+function renderAll(){
+  // 공지
+  $('#n-on').classList.toggle('on',!!CFG.notice.on);
+  $('#n-tag').value=CFG.notice.tag||'';$('#n-title').value=CFG.notice.title||'';$('#n-sub').value=toText(CFG.notice.sub);$('#n-link').value=CFG.notice.link||'';$('#n-until').value=CFG.notice.until||'';
+  renderNoticePreview();
+  renderBlockedDates();renderSlotGrid();renderBlockedTimesList();
+  fillHourSelects();renderSpecialList();
+  renderGifts();
+}
+function tog(id,fn){fn();document.getElementById(id).classList.toggle('on');}
+
+/* ---- 공지 ---- */
+function renderNoticePreview(){
+  const n=CFG.notice,box=$('#n-preview');
+  const expired=n.until&&new Date()>new Date(n.until+'T23:59:59+09:00');
+  if(!n.on||expired){box.innerHTML=`<div class="mini">${!n.on?'지금은 꺼져 있어 손님 페이지에 보이지 않아요.':'종료일이 지나서 손님 페이지에 보이지 않아요.'}</div>`;return;}
+  box.innerHTML=`<div class="preview"><span style="flex:1;min-width:0">${n.tag?`<span class="nt-tag">${esc(n.tag)}</span>`:''}<span class="nt-title">${esc(n.title)}</span>${n.sub?`<span class="nt-sub">${n.sub}</span>`:''}</span>${n.link?'<span class="nt-go">보기 →</span>':''}</div>`;
+}
+
+/* ---- 마감 날짜 ---- */
+function addBlockedDate(){const v=$('#bd-date').value;if(!v)return toast('날짜를 골라주세요');if(!CFG.blocked_dates.includes(v))CFG.blocked_dates.push(v);CFG.blocked_dates.sort();$('#bd-date').value='';dirty();renderBlockedDates();}
+function delBlockedDate(v){CFG.blocked_dates=CFG.blocked_dates.filter(d=>d!==v);dirty();renderBlockedDates();}
+function renderBlockedDates(){
+  const el=$('#bd-list');
+  if(!CFG.blocked_dates.length){el.innerHTML='<div class="mini">마감한 날짜가 없어요.</div>';return;}
+  el.innerHTML=CFG.blocked_dates.map(d=>`<span class="chip">${dstr(d)} <b onclick="delBlockedDate('${d}')">×</b></span>`).join('');
+}
+
+/* ---- 마감 시간 ---- */
+function slotsAll(){const r=[];for(let h=9;h<20;h++){r.push(`${h}:00~${h}:30`);r.push(`${h}:30~${h+1}:00`);}return r;}
+function renderSlotGrid(){
+  const d=$('#bt-date').value,g=$('#bt-grid');
+  if(!d){g.innerHTML='<div class="mini" style="grid-column:span 3">날짜를 먼저 골라주세요.</div>';return;}
+  const cur=CFG.blocked_times[d]||[];
+  let h=`<div class="slot-lbl">${dstr(d)} · 탭해서 마감/해제</div>`;
+  slotsAll().forEach(s=>{h+=`<div class="slot${cur.includes(s)?' on':''}" onclick="togSlot('${d}','${s}')">${s}</div>`;});
+  g.innerHTML=h;
+}
+function togSlot(d,s){
+  const cur=CFG.blocked_times[d]||[];
+  const next=cur.includes(s)?cur.filter(x=>x!==s):cur.concat(s);
+  if(next.length)CFG.blocked_times[d]=next;else delete CFG.blocked_times[d];
+  dirty();renderSlotGrid();renderBlockedTimesList();
+}
+function clearSlots(d){delete CFG.blocked_times[d];dirty();renderSlotGrid();renderBlockedTimesList();}
+function renderBlockedTimesList(){
+  const el=$('#bt-list');const keys=Object.keys(CFG.blocked_times).sort();
+  if(!keys.length){el.innerHTML='<div class="mini">마감한 시간이 없어요.</div>';return;}
+  el.innerHTML=keys.map(d=>`<div class="list-item"><div><b>${dstr(d)}</b><small>${CFG.blocked_times[d].join(' · ')}</small></div><button class="btn s danger" onclick="clearSlots('${d}')">전체 해제</button></div>`).join('');
+}
+
+/* ---- 특별 운영일 ---- */
+function fillHourSelects(){
+  const opt=(none)=>(none?'<option value="">없음</option>':'')+Array.from({length:14},(_,i)=>i+8).map(h=>`<option value="${h}">${h}시</option>`).join('');
+  $('#sp-y1').innerHTML=opt(false);$('#sp-y2').innerHTML=opt(false);$('#sp-m1').innerHTML=opt(true);$('#sp-m2').innerHTML=opt(true);
+  $('#sp-y1').value='10';$('#sp-y2').value='14';
+}
+function addSpecial(){
+  const d=$('#sp-date').value;if(!d)return toast('날짜를 골라주세요');
+  const y1=+$('#sp-y1').value,y2=+$('#sp-y2').value;if(!(y2>y1))return toast('공방 픽업 시간을 확인해주세요');
+  const m1=$('#sp-m1').value,m2=$('#sp-m2').value;let m=[];
+  if(m1!==''||m2!==''){if(m1===''||m2===''||!(+m2>+m1))return toast('무인 픽업 시간을 확인해주세요');m=[+m1,+m2];}
+  CFG.special_hours[d]={y:[y1,y2],m};$('#sp-date').value='';dirty();renderSpecialList();
+}
+function delSpecial(d){delete CFG.special_hours[d];dirty();renderSpecialList();}
+function renderSpecialList(){
+  const el=$('#sp-list');const keys=Object.keys(CFG.special_hours).sort();
+  if(!keys.length){el.innerHTML='<div class="mini">특별 운영일이 없어요.</div>';return;}
+  el.innerHTML=keys.map(d=>{const v=CFG.special_hours[d];return `<div class="list-item"><div><b>${dstr(d)}</b><small>공방 ${v.y[0]}~${v.y[1]}시${v.m&&v.m.length?` · 무인 ${v.m[0]}~${v.m[1]}시`:' · 무인 없음'}</small></div><button class="btn s danger" onclick="delSpecial('${d}')">삭제</button></div>`;}).join('');
+}
+
+/* ---- 답례 구성 ---- */
+function renderGifts(){
+  const el=$('#gi-list');
+  el.innerHTML=CFG.gift_items.map((it,i)=>`<div class="gi${it.soldout?' soldout':''}">
+  <div class="gi-head">
+    <img class="gi-img" src="${esc(it.img)||'data:image/svg+xml,'+encodeURIComponent('<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"84\" height=\"84\"><rect width=\"84\" height=\"84\" fill=\"#FAF7F7\"/></svg>')}" alt="" onerror="this.style.opacity=.3" />
+    <div class="gi-title">${esc(it.name)||'(이름 없음)'}<small>${fmt(it.price)} · 최소 ${it.min}세트 · ${it.weekday?'평일 전용':'평일·주말'}${it.soldout?' · <b style=\"color:#C04040\">마감</b>':''}</small>
+      <div class="gi-tools"><label class="btn s" style="cursor:pointer">사진 바꾸기<input type="file" accept="image/*" style="display:none" onchange="uploadGiftImg(${i},this)"></label><button class="btn s" onclick="moveGift(${i},-1)" ${i===0?'disabled':''}>↑</button><button class="btn s" onclick="moveGift(${i},1)" ${i===CFG.gift_items.length-1?'disabled':''}>↓</button><button class="btn s danger" onclick="delGift(${i})">삭제</button></div>
+    </div>
+  </div>
+  <div class="gi-body">
+    <div class="tg${it.soldout?' on':''}" style="margin-top:12px" onclick="setGift(${i},'soldout',!CFG.gift_items[${i}].soldout);renderGifts()"><div><div class="tg-name">품절 (마감)</div><div class="tg-sub">켜면 손님이 담을 수 없어요</div></div><div class="sw"></div></div>
+    <div class="tg${it.weekday?' on':''}" onclick="setGift(${i},'weekday',!CFG.gift_items[${i}].weekday);renderGifts()"><div><div class="tg-name">평일 픽업 전용</div><div class="tg-sub">켜면 토·일·공휴일 픽업 날짜를 고를 수 없어요</div></div><div class="sw"></div></div>
+    <div class="tg${it.best?' on':''}" onclick="setGift(${i},'best',!CFG.gift_items[${i}].best);renderGifts()"><div><div class="tg-name">"가장 많이 찾는 구성" 표시</div></div><div class="sw"></div></div>
+    <span class="lbl">이름</span><input type="text" value="${esc(it.name)}" oninput="setGift(${i},'name',this.value)" onchange="renderGifts()" />
+    <div class="row"><div><span class="lbl">가격(원)</span><input type="number" inputmode="numeric" value="${it.price}" oninput="setGift(${i},'price',Number(this.value)||0)" onchange="renderGifts()" /></div><div><span class="lbl">최소 세트</span><input type="number" inputmode="numeric" value="${it.min}" oninput="setGift(${i},'min',Math.max(1,Number(this.value)||1))" onchange="renderGifts()" /></div></div>
+    <span class="lbl">한 줄 설명</span><input type="text" value="${esc(it.desc)}" oninput="setGift(${i},'desc',this.value)" />
+    <span class="lbl">구성 <span style="font-weight:400">(· 로 구분)</span></span><input type="text" value="${esc(it.items)}" oninput="setGift(${i},'items',this.value)" />
+  </div></div>`).join('');
+}
+function setGift(i,k,v){CFG.gift_items[i][k]=v;dirty();}
+function moveGift(i,d){const a=CFG.gift_items;const j=i+d;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];dirty();renderGifts();}
+function delGift(i){if(!confirm(`"${CFG.gift_items[i].name}" 구성을 삭제할까요?`))return;CFG.gift_items.splice(i,1);dirty();renderGifts();}
+function addGift(){CFG.gift_items.push({id:'g'+Date.now(),name:'',price:0,min:10,weekday:false,img:'',desc:'',items:'',best:false,soldout:false});dirty();renderGifts();window.scrollTo(0,document.body.scrollHeight);}
+async function uploadGiftImg(i,input){
+  const f=input.files&&input.files[0];if(!f)return;
+  toast('사진 올리는 중…');
+  try{
+    const blob=await resizeImage(f,1000);
+    const name=`site/gift_${Date.now()}_${Math.random().toString(36).slice(2,7)}.jpg`;
+    const r=await fetch(`${SUPA_URL}/storage/v1/object/naroom-refs/${name}`,{method:'POST',headers:{'apikey':SUPA_KEY,'Authorization':'Bearer '+SUPA_KEY,'Content-Type':'image/jpeg','x-upsert':'false'},body:blob});
+    if(!r.ok)throw new Error('업로드 실패 '+r.status);
+    CFG.gift_items[i].img=`${SUPA_URL}/storage/v1/object/public/naroom-refs/${name}`;
+    dirty();renderGifts();toast('사진이 바뀌었어요. 저장을 눌러주세요');
+  }catch(e){toast(e.message);}
+}
+function resizeImage(file,max){
+  return new Promise((res,rej)=>{
+    const img=new Image();const url=URL.createObjectURL(file);
+    img.onload=()=>{const s=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);c.toBlob(b=>b?res(b):rej(new Error('변환 실패')),'image/jpeg',.86);};
+    img.onerror=()=>rej(new Error('사진을 읽을 수 없어요'));img.src=url;
+  });
+}
+
+/* ---- 저장 ---- */
+async function saveAll(){
+  const pw=sessionStorage.getItem(PW_KEY);if(!pw)return logout();
+  const bad=CFG.gift_items.find(it=>!it.name.trim()||!(it.price>0));
+  if(bad){toast('이름과 가격이 비어 있는 답례 구성이 있어요');return;}
+  const btn=$('#save-btn');btn.disabled=true;btn.textContent='저장 중…';
+  try{
+    await rpc('naroom_site_set',{p_pw:pw,p_value:CFG});
+    isDirty=false;$('#save-st').textContent='저장됨 · 손님 페이지에 반영됐어요';$('#save-st').className='st';toast('저장됐어요');
+  }catch(e){toast('저장 실패: '+(e.message.includes('bad password')?'비밀번호가 바뀌었어요. 다시 로그인해주세요':e.message));}
+  btn.disabled=false;btn.textContent='저장하기';
+}
+async function changePw(){
+  const a=$('#pw-new').value,b=$('#pw-new2').value,err=$('#pw-err');err.textContent='';
+  if(a.length<6)return err.textContent='6자 이상으로 정해주세요';
+  if(a!==b)return err.textContent='두 칸이 서로 달라요';
+  try{const ok=await rpc('naroom_site_set_pw',{p_old:sessionStorage.getItem(PW_KEY),p_new:a});if(!ok)return err.textContent='변경에 실패했어요. 다시 로그인해주세요';sessionStorage.setItem(PW_KEY,a);$('#pw-new').value='';$('#pw-new2').value='';toast('비밀번호를 바꿨어요');}
+  catch(e){err.textContent=e.message;}
+}
+
+/* ---- 시작 ---- */
+(function(){const pw=sessionStorage.getItem(PW_KEY);if(pw){enter();}})();
+</script>
+</body></html>
