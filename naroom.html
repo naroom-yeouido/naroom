@@ -171,11 +171,18 @@ input:focus,select:focus{border-color:#C8929A}
 .home-foot{font-size:11px;color:#CCC;text-align:center;margin-top:20px;line-height:1.7}
 
 /* 답례 */
-.gi{border:1.5px solid #EEE;border-radius:14px;padding:12px;background:#fff;margin-bottom:9px;display:flex;gap:12px;align-items:flex-start;transition:all .15s}
+.gi{border:1.5px solid #EEE;border-radius:14px;padding:0 0 12px;background:#fff;margin-bottom:12px;overflow:hidden;transition:all .15s}
 .gi.sel{border-color:#C8929A;background:#FFF5F6}
 .gi.soldout{opacity:.45}
-.gi-img{width:72px;height:72px;border-radius:10px;object-fit:cover;flex-shrink:0;border:1px solid #F0EDED;background:#FAF7F7}
-.gi-body{flex:1;min-width:0}
+.gi-img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;background:#FAF7F7;cursor:zoom-in}
+.gi-zoom{font-size:10px;color:#BBB;text-align:right;padding:5px 12px 0}
+.gi-body{padding:6px 14px 0;min-width:0}
+/* 사진 크게 보기 */
+.zoom{position:fixed;inset:0;background:rgba(20,15,15,.94);z-index:500;display:none;align-items:center;justify-content:center;padding:16px;cursor:zoom-out}
+.zoom.show{display:flex}
+.zoom img{max-width:100%;max-height:92vh;border-radius:10px;object-fit:contain}
+.zoom .zc{position:absolute;top:14px;right:16px;color:#fff;font-size:26px;line-height:1;font-weight:300}
+.zoom .zt{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:#fff;font-size:13px;font-weight:700;padding:0 20px}
 .gi-name{font-size:13px;font-weight:800;color:#2D2D2D;letter-spacing:-.2px}
 .gi-desc{font-size:11px;color:#AAA;margin-top:2px;line-height:1.5}
 .gi-items{font-size:11px;color:#888;margin-top:4px;line-height:1.5;word-break:keep-all}
@@ -251,6 +258,7 @@ input:focus,select:focus{border-color:#C8929A}
   <button class="btn-reset" onclick="backToMenu()">처음으로 돌아가기</button></div>
 </div><!-- /form-screen -->
 </div>
+<div class="zoom" id="zoom" onclick="zoomClose()"><span class="zc">×</span><img src="" alt="" /><div class="zt"></div></div>
 <script>
 /* ================================================================
    ★★★ 사장님 수정 구역 ★★★  (이 파일에서 고칠 곳은 여기뿐입니다)
@@ -1352,7 +1360,8 @@ function giftCardHtml(it){
     :q>0?`<div class="gi-qty"><button class="qbtn" onclick="giftChg('${it.id}',-1)">−</button><span class="qnum">${q}</span><span class="qunit">세트</span><button class="qbtn" onclick="giftChg('${it.id}',1)">+</button></div>`
     :`<button class="gi-add" onclick="giftChg('${it.id}',${it.min})">담기</button>`;
   return `<div class="gi${q>0?' sel':''}${it.soldout?' soldout':''}" id="gi-${it.id}">
-  <img class="gi-img" src="${it.img}" alt="" loading="lazy" />
+  <img class="gi-img" src="${it.img}" alt="${it.name}" loading="lazy" onclick="zoomImg('${it.img}','${it.name}')" />
+  <div class="gi-zoom">사진을 탭하면 크게 볼 수 있어요</div>
   <div class="gi-body">
     <div class="gi-name">${it.name}${it.best?'<span class="pill">가장 많이 찾는 구성</span>':''}</div>
     ${it.desc?`<div class="gi-desc">${it.desc}</div>`:''}
@@ -1361,6 +1370,12 @@ function giftCardHtml(it){
     <div class="gi-row"><span class="gi-price">${fmt(it.price)}</span>${ctrl}</div>
   </div></div>`;
 }
+function zoomImg(src,title){
+  const z=document.getElementById('zoom');
+  z.querySelector('img').src=src; z.querySelector('.zt').textContent=title||'';
+  z.classList.add('show'); document.body.style.overflow='hidden';
+}
+function zoomClose(){document.getElementById('zoom').classList.remove('show');document.body.style.overflow='';}
 function giftChg(id,d){
   const it=giftItem(id);if(!it||it.soldout)return;
   const cur=G.qty[id]||0;
